@@ -93,7 +93,7 @@ class login extends State<first_page>{
                   Text(
                       'Signup',
                     style: TextStyle(
-                      color: Colors.lightBlueAccent,
+                      color: Color(0xfff50072),
                       fontSize: 15,
 
                     ),
