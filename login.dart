@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:test/Helpful.dart';
+
+import 'Info.dart';
 
 class first_page extends StatefulWidget{
   @override
@@ -11,6 +15,7 @@ class login extends State<first_page>{
   final idController = TextEditingController();
   final passwordController = TextEditingController();
   bool _isVisible = true;
+  String response = '';
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -40,7 +45,6 @@ class login extends State<first_page>{
                   ),
                 ],
               ),
-
               SizedBox(height: 25),
               const NameBox(title: 'User Name:' , value: 25),
               SizedBox(height: 5),
@@ -116,9 +120,52 @@ class login extends State<first_page>{
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                 ),
               ),
+              SizedBox(height: 15),
+              Row(
+                children: [
+                  InkWell(
+                    onTap: () async {
+                      logIn();
+                      if (response == 'رمز مورد تایید است!') {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const InfoScreen(),
+                          ),
+                        );
+                      }
+                      else{
+                        Text(
+                          response,
+                          style: TextStyle(
+                            color: Color(0xbd961d6b),
+                            fontSize: 15
+                          ),
+                        );
+                      }
+                    },
+                  )
+                ],
+              )
             ],
           ),
         )
     );
   }
+
+  Future<String> logIn() async {
+    await Socket.connect("192.168.1.35", 8000).then((serverSocket) {
+      serverSocket
+          .write('${usernameController.text}-${idController.text}-${passwordController.text}\u0000');
+      serverSocket.flush();
+      serverSocket.listen((socketResponse) {
+        setState(() {
+          response = String.fromCharCodes(socketResponse);
+        });
+      });
+    });
+    print("----------   server response is:  { $response }");
+    return response;
+  }
+
 }
