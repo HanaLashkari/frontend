@@ -2,21 +2,21 @@ import 'dart:io';
 
 import 'package:test/Helpful.dart';
 import 'package:flutter/material.dart';
+import 'package:test/sign_up.dart';
 
 import 'Info.dart';
 
-class page_one extends StatefulWidget{
+class login_page extends StatefulWidget{
   @override
-  State<page_one> createState() => _page_oneState();
+  State<login_page> createState() => _login_pageState();
 }
 
-class _page_oneState extends State<page_one> {
+class _login_pageState extends State<login_page> {
   final usernameController = TextEditingController();
   final idController = TextEditingController();
   final passwordController = TextEditingController();
   bool _isVisible = true;
   String response = '';
-  bool answerMassege = false;
   static const buttonColor = Color(0xffbb0000);
   static const Color colorText = Color(0xFF024335);
 
@@ -30,8 +30,12 @@ class _page_oneState extends State<page_one> {
           icon: Icon(
             Icons.arrow_back,
             color: colorText,
-          ), onPressed: () {  //todo
-             },
+          ),
+          onPressed: () => setState(
+                () {
+              Navigator.pop(context);
+            },
+          ),
         ),
       ),
       body: Container(
@@ -151,7 +155,7 @@ class _page_oneState extends State<page_one> {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const InfoScreen(),
+                        builder: (context) => signup_page(),
                       ),
                     );
                   },
@@ -173,7 +177,7 @@ class _page_oneState extends State<page_one> {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const InfoScreen(),
+                        builder: (context) => signup_page(),
                       ),
                     );
                   }
@@ -197,24 +201,7 @@ class _page_oneState extends State<page_one> {
                   ),
                 )
               )),
-            response == '10'? Positioned(
-              top: 560,
-                right: widthOfScreen * 0.138,
-                child: PharseText(
-                  pharse: 'رمز عبور اشتباه است دوباره امتحان کنید',
-                  size: 17,
-                  color: buttonColor,
-                )
-            ) : response == '01' || response == '00' ?
-            Positioned(
-                top: 560,
-                right: widthOfScreen * 0.21,
-                child: PharseText(
-                  pharse: 'اطلاعات یافت نشد، ثبت نام کنید',
-                  size: 17,
-                  color: buttonColor,
-                )
-            ) : Positioned(child: Container()),
+            Eror_login(response: response, widthOfScreen: widthOfScreen, buttonColor: buttonColor),
           ],
         ),
       ),
@@ -223,8 +210,8 @@ class _page_oneState extends State<page_one> {
 
   Future<String> logIn() async {
     await Socket.connect("192.168.1.35", 8000).then((serverSocket) {
-      serverSocket
-          .write('${usernameController.text}-${idController.text}-${passwordController.text}\u0000');
+      serverSocket.write('login\u0000');
+      serverSocket.write('${usernameController.text}-${idController.text}-${passwordController.text}\u0000');
       serverSocket.flush();
       serverSocket.listen((socketResponse) {
         setState(() {
@@ -232,7 +219,7 @@ class _page_oneState extends State<page_one> {
         });
       });
     });
-    print("----------   server response is:  { $response }");
+    print("---------- server response is:  { $response }");
     return response;
   }
 }

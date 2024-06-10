@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:test/Helpful.dart';
 import 'package:flutter/material.dart';
-
+import 'package:test/log_in.dart';
 import 'Info.dart';
 
 class signup_page extends StatefulWidget{
@@ -29,8 +29,12 @@ class _signup_page extends State<signup_page> {
           icon: Icon(
             Icons.arrow_back,
             color: colorText,
-          ), onPressed: () {  //todo
-        },
+          ),
+          onPressed: () => setState(
+              () {
+                Navigator.pop(context);
+          },
+        ),
         ),
       ),
       body: Container(
@@ -134,17 +138,17 @@ class _signup_page extends State<signup_page> {
               ),
             ),
             Positioned(
-                top: 470,
+                top: 482,
                 right: 115,
                 child: InkWell(
                     onTap: () async {
-                      logIn();
+                      signUp();
                       print('************here     :    $response');
-                      if (response == '11') {
+                      if (response == '5') {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const InfoScreen(),
+                            builder: (context) => login_page(),
                           ),
                         );
                       }
@@ -168,34 +172,17 @@ class _signup_page extends State<signup_page> {
                       ),
                     )
                 )),
-            response == '10'? Positioned(
-                top: 560,
-                right: widthOfScreen * 0.138,
-                child: PharseText(
-                  pharse: 'رمز عبور اشتباه است دوباره امتحان کنید',
-                  size: 17,
-                  color: buttonColor,
-                )
-            ) : response == '01' || response == '00' ?
-            Positioned(
-                top: 560,
-                right: widthOfScreen * 0.21,
-                child: PharseText(
-                  pharse: 'اطلاعات یافت نشد، ثبت نام کنید',
-                  size: 17,
-                  color: buttonColor,
-                )
-            ) : Positioned(child: Container()),
+            Eror_password(response: response, widthOfScreen: widthOfScreen, buttonColor: buttonColor),
+            Eror_login(response: response, widthOfScreen: widthOfScreen, buttonColor: buttonColor)
           ],
         ),
       ),
     );
   }
-
-  Future<String> logIn() async {
+  Future<String> signUp() async {
     await Socket.connect("192.168.1.35", 8000).then((serverSocket) {
-      serverSocket
-          .write('${usernameController.text}-${idController.text}-${passwordController.text}\u0000');
+      serverSocket.write('signup\u0000');
+      serverSocket.write('${usernameController.text}-${idController.text}-${passwordController.text}\u0000');
       serverSocket.flush();
       serverSocket.listen((socketResponse) {
         setState(() {
@@ -203,7 +190,8 @@ class _signup_page extends State<signup_page> {
         });
       });
     });
-    print("----------   server response is:  { $response }");
+    print("---------- server response is:  { $response }");
     return response;
   }
+
 }

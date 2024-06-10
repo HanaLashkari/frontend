@@ -65,11 +65,14 @@ class NameBox extends StatelessWidget{
 
 }
 
-class PharseText extends StatelessWidget{
-  const PharseText({super.key , required this.pharse , required this.color , required this.size});
+class PharseText extends StatelessWidget {
+  const PharseText(
+      {super.key, required this.pharse, required this.color, required this.size});
+
   final String? pharse;
   final Color color;
   final double size;
+
   @override
   Widget build(BuildContext context) {
     return Text(
@@ -80,6 +83,107 @@ class PharseText extends StatelessWidget{
         fontWeight: FontWeight.w100,
       ),
     );
+  }
+}
+
+class Eror_login extends StatelessWidget{
+  Eror_login({required this.response , required this.widthOfScreen , required this.buttonColor});
+  String response;
+  double widthOfScreen;
+  Color buttonColor;
+  @override
+  Widget build(BuildContext context) {
+    return response == '10'? Positioned(
+        top: 560,
+        right: widthOfScreen * 0.138,
+        child: PharseText(
+          pharse: 'رمز عبور اشتباه است دوباره امتحان کنید',
+          size: 17,
+          color: buttonColor,
+        )
+    ) : response == '01' || response == '00' ?
+    Positioned(
+        top: 560,
+        right: widthOfScreen * 0.21,
+        child: PharseText(
+          pharse: 'اطلاعات یافت نشد، ثبت نام کنید',
+          size: 17,
+          color: buttonColor,
+        )
+    ) : Positioned(child: Container());
+  }
+
+  }
+
+class Eror_password extends StatelessWidget{
+  Eror_password({required this.response , required this.widthOfScreen , required this.buttonColor});
+  String response;
+  double widthOfScreen;
+  Color buttonColor;
+  @override
+  Widget build(BuildContext context) {
+    return response == '0'? Positioned(
+        top: 540,
+        right: widthOfScreen * 0.12,
+        child: PharseText(
+          pharse: 'رمز عبور اشتباه باید بیشتر از 8 حرف باشد',
+          size: 17,
+          color: buttonColor,
+        )
+    ) : response == '1' ?
+    Positioned(
+        top: 540,
+        right: widthOfScreen * 0.055,
+        child: PharseText(
+          pharse: 'رمز عبور باید شامل یکی از کارکترهای @ ، ! ، # و \$ باشد',
+          size: 15,
+          color: buttonColor,
+        )
+    ) : response == '2' ? Positioned(
+        top: 540,
+        right: widthOfScreen * 0.085,
+        child: PharseText(
+          pharse: 'رمز عبور باید شامل یک حرف بزرگ انگلیسی باشد',
+          size: 16,
+          color: buttonColor,
+        )
+    )
+        : response == '3' ? Positioned(
+        top: 540,
+        right: widthOfScreen * 0.085,
+        child: PharseText(
+          pharse: 'رمز عبور باید شامل یک حرف کوچک انگلیسی باشد',
+          size: 16,
+          color: buttonColor,
+        )
+    ): response == '4' ? Positioned(
+        top: 540,
+        right: widthOfScreen * 0.14,
+        child: PharseText(
+          pharse: 'رمز عبور باید شامل یکی از اعداد 0-9 باشد',
+          size: 16,
+          color: buttonColor,
+        )
+    ) :
+    response == '6' ? Positioned(
+        top: 540,
+        right: widthOfScreen * 0.055,
+        child: PharseText(
+          pharse: 'رمز عبور نباید شامل نام کاربری و شماره دانشجویی باشد',
+          size: 15,
+          color: buttonColor,
+        )
+    ) :
+    response == '7' ? Positioned(
+        top: 540,
+        right: widthOfScreen * 0.25,
+        child: PharseText(
+          pharse: 'این حساب کاربری وجود دارد',
+          size: 17,
+          color: buttonColor,
+        )
+    ) :
+    Positioned(child: Container());
   }
 
 }
