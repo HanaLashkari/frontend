@@ -185,9 +185,11 @@ class _signup_page extends State<signup_page> {
       serverSocket.write('${usernameController.text}-${idController.text}-${passwordController.text}\u0000');
       serverSocket.flush();
       serverSocket.listen((socketResponse) {
-        setState(() {
-          response = String.fromCharCodes(socketResponse);
-        });
+        if (mounted) {
+          setState(() {
+            response = String.fromCharCodes(socketResponse);
+          });
+        }
       });
     });
     print("---------- server response is:  { $response }");
