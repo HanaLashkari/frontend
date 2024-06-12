@@ -2,8 +2,7 @@ import 'dart:io';
 
 import 'package:test/Helpful.dart';
 import 'package:flutter/material.dart';
-import 'package:test/log_in.dart';
-import 'Info.dart';
+import 'package:test/user_information.dart';
 
 class signup_page extends StatefulWidget{
   @override
@@ -17,7 +16,7 @@ class _signup_page extends State<signup_page> {
   bool _isVisible = true;
   String response = '';
   static const buttonColor = Color(0xffbb0000);
-  static const colorText = Color(0xFF024335);
+  static const textColor = Color(0xFF024335);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +27,7 @@ class _signup_page extends State<signup_page> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: colorText,
+            color: textColor,
           ),
           onPressed: () => setState(
               () {
@@ -60,7 +59,7 @@ class _signup_page extends State<signup_page> {
               right: 30,
               child: PharseText(
                 pharse: 'به اپلیکیشن دانشجویار خوش آمدید',
-                color: colorText,
+                color: textColor,
                 size: 22,
               ),
             ),
@@ -69,7 +68,7 @@ class _signup_page extends State<signup_page> {
               right: 75,
               child: PharseText(
                 pharse: 'برای ایجاد حساب کاربری ثبت نام کنید',
-                color: colorText,
+                color: textColor,
                 size: 15,
               ),
             ),
@@ -110,7 +109,7 @@ class _signup_page extends State<signup_page> {
                       icon: _isVisible
                           ? Icon(Icons.visibility_off)
                           : Icon(Icons.visibility),
-                      color: colorText,
+                      color: textColor,
                     ),
                     filled: true,
                     fillColor: Colors.white70,
@@ -148,7 +147,7 @@ class _signup_page extends State<signup_page> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => login_page(),
+                            builder: (context) => user_profile(info: '${usernameController.text}-${idController.text}-${passwordController.text}'),
                           ),
                         );
                       }
@@ -158,7 +157,7 @@ class _signup_page extends State<signup_page> {
                       height: 40,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
-                        color: colorText,
+                        color: textColor,
                       ),
                       child: const Row(
                         children: [

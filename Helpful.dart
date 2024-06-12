@@ -22,12 +22,12 @@ class FieldBox extends StatelessWidget{
             fontWeight: FontWeight.w300,
           ),
           border: const UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.green)),
+              borderSide: BorderSide(color: Colors.green , width: 5)),
           hintText: hintText,
           hintStyle: const TextStyle(color: Color(0xFFB4B4B4)),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
-            borderSide: BorderSide(color: Color(0xff006716)),
+            borderSide: BorderSide(color: Color(0xff003b11) , width: 3),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
