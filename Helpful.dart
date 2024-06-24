@@ -165,8 +165,9 @@ class Eror_password extends StatelessWidget{
 }
 
 class ToDoList extends StatefulWidget{
-  ToDoList({required this.pharse});
+  ToDoList({required this.pharse , required this.b});
   String pharse;
+  bool b;
   @override
   static const buttonColor = Color(0xffbb0000);
   static const textColor = Color(0xFF024335);
@@ -184,7 +185,7 @@ class _ToDoListState extends State<ToDoList> {
         width: 350,
         height: 60,
         decoration: BoxDecoration(
-          color: ToDoList.backgroundColor,
+          color: widget.b ? ToDoList.backgroundColor : Color(0xFFF8FFF8),
           borderRadius: BorderRadius.all(Radius.circular(13)),
           border: Border.all(
             color: ToDoList.textColor,
@@ -207,7 +208,7 @@ class _ToDoListState extends State<ToDoList> {
               child: Text(
               widget.pharse,
               style: TextStyle(
-                color: ToDoList.textColor,
+                color: widget.b ? ToDoList.textColor : ToDoList.buttonColor,
                 fontWeight: FontWeight.w600,
                 fontSize: 15,
               ),
@@ -229,7 +230,7 @@ class _ToDoListState extends State<ToDoList> {
                         ),
                       ),
                     ),
-                    InkWell(
+                    widget.b ? InkWell(
                       child: IconButton(
                         icon: Icon(
                           size: 28,
@@ -241,7 +242,7 @@ class _ToDoListState extends State<ToDoList> {
                           },
                         ),
                       ),
-                    ),
+                    ) : SizedBox(width: 0,),
                   ],
                 ))
         ]

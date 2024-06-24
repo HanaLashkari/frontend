@@ -20,7 +20,7 @@ class _classesState extends State<classes> {
     double widthOfScreen = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Classes Page'),
+        title: Text('صفحه کلاسا'),
       ),
       body: SingleChildScrollView(
         child: Container(

@@ -18,14 +18,16 @@ class _todolistState extends State<todolist> {
   Widget build(BuildContext context) {
     double heightOfScreen = MediaQuery.of(context).size.height;
     double widthOfScreen = MediaQuery.of(context).size.width;
+    int countOfToDoListBox = -10+2;
+    int countOfDoneWorkBox = -4 + 2;
     return Scaffold(
       appBar: AppBar(
-        title: Text('To Do List Page'),
+        title: Text('صفحه کارا'),
       ),
       body: SingleChildScrollView(
         child: Container(
           width: widthOfScreen,
-          height: heightOfScreen,
+          height: countOfToDoListBox+countOfDoneWorkBox>12 ? heightOfScreen+(countOfToDoListBox+countOfDoneWorkBox)*85 : heightOfScreen,
           decoration: BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.topRight,
@@ -43,7 +45,50 @@ class _todolistState extends State<todolist> {
           ),
           child: Stack(
             children: [
-
+              Positioned(
+                  top: 20,
+                  right: 20,
+                  child: Text(
+                    'کارها',
+                    style: TextStyle(
+                      color: textColor,
+                      fontWeight: FontWeight.w800,
+                      fontSize: 25,
+                    ),
+                  )
+              ), //to do list text
+              Positioned(
+                  top: 75,
+                  right: 16,
+                  child: Column(
+                    children: [
+                      ToDoList(pharse: 'Ap project' , b: true,),
+                      SizedBox(height: 20,),
+                      ToDoList(pharse: 'Sleep enough' , b: true,)
+                    ],
+                  )), //to do list boxes
+              Positioned(
+                  top: (countOfToDoListBox+11)*80,
+                  right: 20,
+                  child: Text(
+                    'کارهای انجام شده',
+                    style: TextStyle(
+                      color: textColor,
+                      fontWeight: FontWeight.w800,
+                      fontSize: 25,
+                    ),
+                  )
+              ), //done works text
+              Positioned(
+                  top: (countOfToDoListBox+11)*80+60,
+                  right: 16,
+                  child: Column(
+                    children: [
+                      ToDoList(pharse: 'Ap project' , b: false,),
+                      SizedBox(height: 20,),
+                      ToDoList(pharse: 'Sleep enough' , b: false,)
+                    ],
+                  )), //done works boxes
             ],
           ),
         ),
@@ -140,6 +185,21 @@ class _todolistState extends State<todolist> {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(context, route);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('کار شما اضافه شد')),
+          );
+        },
+        child: Icon(
+          Icons.add,
+          color: backgroundColor,
+          size: 40,
+        ),
+        backgroundColor: textColor,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
 
     );
   }

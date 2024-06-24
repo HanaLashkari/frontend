@@ -20,7 +20,7 @@ class _news extends State<news> {
     double widthOfScreen = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: Text('News Page'),
+        title: Text('صفحه خبرا'),
       ),
       body: SingleChildScrollView(
         child: Container(

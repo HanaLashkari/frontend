@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:test/Helpful.dart';
 import 'package:test/classes.dart';
 import 'package:test/news.dart';
@@ -25,7 +27,7 @@ class _homeState extends State<home> {
     print('height :   $heightOfScreen');
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home Page'),
+        title: Text('صفحه سرا'),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -118,11 +120,11 @@ class _homeState extends State<home> {
                   right: 16,
                   child: Column(
                     children: [
-                      ToDoList(pharse: 'پروژه برنامه نویسی پیشرفته'),
+                      ToDoList(pharse: 'پروژه برنامه نویسی پیشرفته' , b: true,),
                       SizedBox(height: 15,),
-                      ToDoList(pharse: 'تکلیف الکترونیک'),
+                      ToDoList(pharse: 'تکلیف الکترونیک' , b: true,),
                       SizedBox(height: 15,),
-                      ToDoList(pharse: 'تکلیف سری ها'),
+                      ToDoList(pharse: 'تکلیف سری ها' , b: true,),
                     ],
                   )), //column for to do list
               Positioned(
@@ -312,39 +314,35 @@ class DoneWork extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
 
-    return Stack(
-      children: [
-        Container(
-          width: 150,
-          height: 85,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: backgroundColor,
-            borderRadius: BorderRadius.all(Radius.circular(13)),
-            border: Border.all(
-              color: textColor,
-              width: 3.5,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(1),
-                spreadRadius: 2,
-                blurRadius: 5,
-                offset: Offset(0, 3), // changes position of shadow
-              ),
-            ],
-          ),
-          child: Text(
-            text,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: textColor,
-              fontWeight: FontWeight.w700,
-              fontSize: 13,
-            ),
-          ),
+    return Container(
+      width: 150,
+      height: 85,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.all(Radius.circular(13)),
+        border: Border.all(
+          color: textColor,
+          width: 3.5,
         ),
-      ]
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(1),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: Offset(0, 3), // changes position of shadow
+          ),
+        ],
+      ),
+      child: Text(
+        text,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: textColor,
+          fontWeight: FontWeight.w700,
+          fontSize: 13,
+        ),
+      ),
     );
   }
 
