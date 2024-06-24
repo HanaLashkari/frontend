@@ -4,8 +4,6 @@ import 'package:test/Helpful.dart';
 import 'package:flutter/material.dart';
 import 'package:test/sign_up.dart';
 
-import 'Info.dart';
-
 class login_page extends StatefulWidget{
   @override
   State<login_page> createState() => _login_pageState();

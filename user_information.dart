@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:test/home.dart';
 
 import 'Helpful.dart';
 
@@ -27,7 +29,6 @@ class _user_profileState extends State<user_profile> {
   var response = '';
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text('User Profile'),
@@ -38,7 +39,9 @@ class _user_profileState extends State<user_profile> {
           ),
           onPressed: () => setState(
                 () {
-              Navigator.pop(context);
+                  Navigator.pushReplacement(context, MaterialPageRoute(
+                    builder: (context) => home(),
+                  ));
             },
           ),
         ),

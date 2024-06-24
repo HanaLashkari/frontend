@@ -41,30 +41,6 @@ class FieldBox extends StatelessWidget{
   }
 }
 
-class NameBox extends StatelessWidget{
-  const NameBox({required this.title , required this.value});
-  final String title;
-  final double value;
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        SizedBox(
-          width: this.value ,
-        ),
-        Text(
-            this.title ,
-            style: TextStyle(
-                color: Colors.purple.shade900,
-                fontSize: 20
-            )
-        ),
-      ],
-    );
-  }
-
-}
-
 class PharseText extends StatelessWidget {
   const PharseText(
       {super.key, required this.pharse, required this.color, required this.size});
@@ -187,3 +163,92 @@ class Eror_password extends StatelessWidget{
   }
 
 }
+
+class ToDoList extends StatefulWidget{
+  ToDoList({required this.pharse});
+  String pharse;
+  @override
+  static const buttonColor = Color(0xffbb0000);
+  static const textColor = Color(0xFF024335);
+  static const backgroundColor = Color(0xFFE6F6EF);
+
+  @override
+  State<ToDoList> createState() => _ToDoListState();
+}
+
+class _ToDoListState extends State<ToDoList> {
+  @override
+  Widget build(BuildContext context) {
+
+    return Container(
+        width: 350,
+        height: 60,
+        decoration: BoxDecoration(
+          color: ToDoList.backgroundColor,
+          borderRadius: BorderRadius.all(Radius.circular(13)),
+          border: Border.all(
+            color: ToDoList.textColor,
+            width: 3.5,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(1),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: Offset(0, 3), // changes position of shadow
+            ),
+          ],
+        ),
+        child: Stack(
+          children: [
+            Positioned(
+              top: 13,
+              right: 10,
+              child: Text(
+              widget.pharse,
+              style: TextStyle(
+                color: ToDoList.textColor,
+                fontWeight: FontWeight.w600,
+                fontSize: 15,
+              ),
+            ),),
+            Positioned(
+              top: 3,
+                child: Row(
+                  children: [
+                    InkWell(
+                      child: IconButton(
+                        icon: Icon(
+                          size: 28,
+                          Icons.cancel_outlined,
+                          color: ToDoList.buttonColor,
+                        ),
+                        onPressed: () => setState(
+                              () {
+                          },
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      child: IconButton(
+                        icon: Icon(
+                          size: 28,
+                          Icons.task_alt,
+                          color: Colors.green,
+                        ),
+                        onPressed: () => setState(
+                              () {
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ))
+        ]
+        )
+    );
+
+  }
+}
+
+

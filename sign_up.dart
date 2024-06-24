@@ -170,7 +170,8 @@ class _signup_page extends State<signup_page> {
                         ],
                       ),
                     )
-                )),
+                )
+            ),
             Eror_password(response: response, widthOfScreen: widthOfScreen, buttonColor: buttonColor),
             Eror_login(response: response, widthOfScreen: widthOfScreen, buttonColor: buttonColor)
           ],
