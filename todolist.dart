@@ -16,11 +16,38 @@ class _todolistState extends State<todolist> {
   static const backgroundColor = Color(0xFFE6F6EF);
   @override
   Widget build(BuildContext context) {
+    double heightOfScreen = MediaQuery.of(context).size.height;
+    double widthOfScreen = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         title: Text('To Do List Page'),
       ),
-      
+      body: SingleChildScrollView(
+        child: Container(
+          width: widthOfScreen,
+          height: heightOfScreen,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                stops: const [
+                  0.5,
+                  0.8,
+                  0.9,
+                ],
+                colors: [
+                  Colors.white,
+                  Colors.green.shade50,
+                  Colors.green.shade100,
+                ]),
+          ),
+          child: Stack(
+            children: [
+
+            ],
+          ),
+        ),
+      ),
       bottomNavigationBar: BottomAppBar(
         color: textColor,
         child: Row(
