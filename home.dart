@@ -16,6 +16,7 @@ class _homeState extends State<home> {
   static const textColor = Color(0xFF024335);
   static const backgroundColor = Color(0xFFE6F6EF);
   int countOfToDoBox = 3;
+  int countOfDoneWorkBox = 2;
   @override
   Widget build(BuildContext context) {
     double heightOfScreen = MediaQuery.of(context).size.height;
@@ -29,7 +30,7 @@ class _homeState extends State<home> {
       body: SingleChildScrollView(
         child: Container(
           width: widthOfScreen,
-          height: heightOfScreen,
+          height: heightOfScreen+countOfDoneWorkBox*50,
           decoration: BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.topRight,
@@ -123,7 +124,7 @@ class _homeState extends State<home> {
                       SizedBox(height: 15,),
                       ToDoList(pharse: 'تکلیف سری ها'),
                     ],
-                  )), //colmun for to do list
+                  )), //column for to do list
               Positioned(
                   top: 380+countOfToDoBox*75,
                   right: 15,
@@ -142,8 +143,10 @@ class _homeState extends State<home> {
                   child: Column(
                     children: [
                       DoneWork('مطالعه برای امتحان ترم ریاضی2'),
+                      SizedBox(height: 15,),
+                      DoneWork('ap project')
                     ],
-                  )),
+                  )), //column for done work
             ],
           ),
         ),
