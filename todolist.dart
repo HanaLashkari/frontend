@@ -14,6 +14,9 @@ class _todolistState extends State<todolist> {
   static const buttonColor = Color(0xffbb0000);
   static const textColor = Color(0xFF024335);
   static const backgroundColor = Color(0xFFE6F6EF);
+  final titleController = TextEditingController();
+  final hourController = TextEditingController();
+  final minuteController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     double heightOfScreen = MediaQuery.of(context).size.height;
@@ -187,7 +190,93 @@ class _todolistState extends State<todolist> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, route);
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                backgroundColor: Color(0xFF005D4A),
+                title: Row(
+                  children: [
+                    Spacer(),
+                    PharseText(pharse: "افزودن کار جدید", color: backgroundColor, size: 20,),
+                    Icon(
+                        Icons.note_add_outlined,
+                        color: backgroundColor,),
+                  ],
+                ),
+                content: Container(
+                  width: 300,
+                  height: 210,
+                  child: Column(
+                    children: [
+                      SizedBox(height: 8,),
+                      Row(
+                        children: [
+                          Spacer(),
+                          PharseText(pharse: "عنوان کار", color: backgroundColor, size: 18),
+                          SizedBox(width: 10,)
+                        ],
+                      ),
+                      SizedBox(height: 8,),
+                      LittleFieldBox(labelText: "خلاصه بنویس", controller: titleController, hintText: "برنامه ریزی فراموش نشه" , size: 320.0),
+                      SizedBox(height: 20,),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          LittleFieldBox(labelText: 'ساعت', controller: hourController, hintText: 'ساعت', size: 80.0),
+                          SizedBox(width: 5),
+                          PharseText(pharse: ' : ', color: backgroundColor, size: 40),
+                          SizedBox(width: 5),
+                          LittleFieldBox(labelText: 'دقیقه', controller: minuteController, hintText: 'دقیقه', size: 80.0),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                actions: [
+                  InkWell(
+                      onTap: () async {
+                        Navigator.of(context).pop();
+                      },
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            alignment: Alignment.centerRight,
+                            width: 220,
+                            height: 60,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Colors.white70,
+                              border: Border.all(
+                                color: Color(0xff003b11),
+                                width: 3.5,
+                              ),
+                            ),
+                            child: const Row(
+                              children: [
+                                SizedBox(width: 75,),
+                                Text(
+                                  'افزودن',
+
+                                  style: TextStyle(
+                                    color: textColor,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      )
+                  )
+                ],
+              );
+            },
+          );
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('کار شما اضافه شد')),
           );

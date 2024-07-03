@@ -41,6 +41,57 @@ class FieldBox extends StatelessWidget{
   }
 }
 
+class LittleFieldBox extends StatelessWidget {
+  const LittleFieldBox({
+    Key? key,
+    required this.labelText,
+    required this.controller,
+    required this.hintText,
+    required this.size,
+  }) : super(key: key);
+  final TextEditingController controller;
+  final String labelText;
+  final String hintText;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: size,
+      child: TextFormField(
+        controller: controller,
+        textAlign: TextAlign.left,
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: Colors.white70,
+          labelText: labelText,
+          floatingLabelBehavior: FloatingLabelBehavior.never, // اضافه کردن خاصیت floatingLabelBehavior
+          labelStyle: const TextStyle(
+            color: Color(0xff003b11),
+            fontWeight: FontWeight.w300,
+          ),
+          border: const UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.green, width: 5),
+          ),
+          hintText: hintText,
+          hintStyle: const TextStyle(color: Color(0xFF706D6D)),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide: BorderSide(color: Color(0xff003b11), width: 3),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(
+              color: Color(0xff09ce36),
+              style: BorderStyle.solid,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class PharseText extends StatelessWidget {
   const PharseText(
       {super.key, required this.pharse, required this.color, required this.size});
