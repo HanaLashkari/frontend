@@ -25,7 +25,7 @@ class _news extends State<news> {
       body: SingleChildScrollView(
         child: Container(
           width: widthOfScreen,
-          height: heightOfScreen+60,
+          height: heightOfScreen+100,
           decoration: BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.topRight,
@@ -44,22 +44,34 @@ class _news extends State<news> {
           child: Stack(
             children: [
               Positioned(
-                  top: 30,
+                  top: 20,
+                  right: 20,
+                  child: Text(
+                    'خبرا',
+                    style: TextStyle(
+                      color: textColor,
+                      fontWeight: FontWeight.w800,
+                      fontSize: 25,
+                    ),
+                  )
+              ),
+              Positioned(
+                  top: 70,
                   right: 13.5,
                   child: NEWS(title: 'news' , text: 'nothing'),
               ),
               Positioned(
-                top: 240,
+                top: 280,
                 right: 13.5,
                 child: NEWS(title: 'news' , text: 'nothing'),
               ),
               Positioned(
-                top: 450,
+                top: 490,
                 right: 13.5,
                 child: NEWS(title: 'news' , text: 'nothing'),
               ),
               Positioned(
-                top: 660,
+                top: 700,
                 right: 13.5,
                 child: NEWS(title: 'news' , text: 'nothing'),
               ),

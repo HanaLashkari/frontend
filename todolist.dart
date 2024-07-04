@@ -218,17 +218,17 @@ class _todolistState extends State<todolist> {
                         ],
                       ),
                       SizedBox(height: 8,),
-                      LittleFieldBox(labelText: "خلاصه بنویس", controller: titleController, hintText: "برنامه ریزی فراموش نشه" , size: 320.0),
+                      LittleFieldBox(labelText: "خلاصه بنویس", controller: titleController, hintText: "برنامه ریزی فراموش نشه" , width: 320.0),
                       SizedBox(height: 20,),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          LittleFieldBox(labelText: 'ساعت', controller: hourController, hintText: 'ساعت', size: 80.0),
+                          LittleFieldBox(labelText: 'ساعت', controller: hourController, hintText: 'ساعت', width: 80.0),
                           SizedBox(width: 5),
                           PharseText(pharse: ' : ', color: backgroundColor, size: 40),
                           SizedBox(width: 5),
-                          LittleFieldBox(labelText: 'دقیقه', controller: minuteController, hintText: 'دقیقه', size: 80.0),
+                          LittleFieldBox(labelText: 'دقیقه', controller: minuteController, hintText: 'دقیقه', width: 80.0),
                         ],
                       )
                     ],

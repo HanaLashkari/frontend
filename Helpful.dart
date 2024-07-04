@@ -47,17 +47,17 @@ class LittleFieldBox extends StatelessWidget {
     required this.labelText,
     required this.controller,
     required this.hintText,
-    required this.size,
+    required this.width,
   }) : super(key: key);
   final TextEditingController controller;
   final String labelText;
   final String hintText;
-  final double size;
+  final double width;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: size,
+      width: width,
       child: TextFormField(
         controller: controller,
         textAlign: TextAlign.left,
@@ -107,7 +107,7 @@ class PharseText extends StatelessWidget {
       style: TextStyle(
         color: color,
         fontSize: size,
-        fontWeight: FontWeight.w100,
+        fontWeight: FontWeight.w300,
       ),
     );
   }

@@ -48,7 +48,19 @@ class _classesState extends State<classes> {
           child: Stack(
             children: [
               Positioned(
-                top: 10,
+                  top: 35,
+                  right: 20,
+                  child: Text(
+                    'کلاسا',
+                    style: TextStyle(
+                      color: textColor,
+                      fontWeight: FontWeight.w800,
+                      fontSize: 25,
+                    ),
+                  )
+              ),
+              Positioned(
+                top: 25,
                 left: 13,
                 child: InkWell(
                     onTap: () async {
@@ -133,7 +145,6 @@ class _classesState extends State<classes> {
                           child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-
                               Text(
                                 'افزودن کلاس',
                                 style: TextStyle(
