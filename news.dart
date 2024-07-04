@@ -25,7 +25,7 @@ class _news extends State<news> {
       body: SingleChildScrollView(
         child: Container(
           width: widthOfScreen,
-          height: heightOfScreen,
+          height: heightOfScreen+60,
           decoration: BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.topRight,
@@ -43,9 +43,29 @@ class _news extends State<news> {
           ),
           child: Stack(
             children: [
-
+              Positioned(
+                  top: 30,
+                  right: 13.5,
+                  child: NEWS(title: 'news' , text: 'nothing'),
+              ),
+              Positioned(
+                top: 240,
+                right: 13.5,
+                child: NEWS(title: 'news' , text: 'nothing'),
+              ),
+              Positioned(
+                top: 450,
+                right: 13.5,
+                child: NEWS(title: 'news' , text: 'nothing'),
+              ),
+              Positioned(
+                top: 660,
+                right: 13.5,
+                child: NEWS(title: 'news' , text: 'nothing'),
+              ),
             ],
           ),
+
         ),
       ),
       bottomNavigationBar: BottomAppBar(
@@ -143,4 +163,59 @@ class _news extends State<news> {
 
     );
   }
+}
+
+class NEWS extends StatelessWidget{
+  String title;
+  String text;
+  NEWS({required this.title,required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          width: 200,
+          height: 180,
+          decoration: BoxDecoration(
+              border: Border.all(width: 4, color: _news.textColor),
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(15),
+                  bottomLeft: Radius.circular(15)
+              ),
+              shape: BoxShape.rectangle,
+              image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: NetworkImage(
+                    'https://static.cdn.asset.aparat.com/avt/35796944-5958-b__267564876.jpg',
+                  )
+              )
+          ),
+        ),
+        Container(
+          width: 160,
+          height: 180,
+          decoration:  BoxDecoration(
+            color: Colors.green.shade300,
+            border: Border.all(width: 4, color: _news.textColor),
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(15),
+                bottomRight: Radius.circular(15)
+            ),
+            shape: BoxShape.rectangle,
+          ),
+          child: Column(
+            children: [
+              PharseText(pharse: title, color: _news.backgroundColor, size: 20),
+              SizedBox(height: 10,),
+              PharseText(pharse: text, color: _news.backgroundColor, size: 15),
+              SizedBox(height: 10,),
+              PharseText(pharse: 'بیشتر...', color: _news.textColor, size: 20),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
 }
