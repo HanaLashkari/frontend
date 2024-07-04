@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:test/Helpful.dart';
 import 'home.dart';
@@ -14,10 +15,13 @@ class _classesState extends State<classes> {
   static const buttonColor = Color(0xffbb0000);
   static const textColor = Color(0xFF024335);
   static const backgroundColor = Color(0xFFE6F6EF);
+  final codeController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     double heightOfScreen = MediaQuery.of(context).size.height;
     double widthOfScreen = MediaQuery.of(context).size.width;
+    double x = 0;
     return Scaffold(
       appBar: AppBar(
         title: Text('صفحه کلاسا'),
@@ -25,7 +29,7 @@ class _classesState extends State<classes> {
       body: SingleChildScrollView(
         child: Container(
           width: widthOfScreen,
-          height: heightOfScreen,
+          height: heightOfScreen + (x>3 ? (x-3)*210 : 0),
           decoration: BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.topRight,
@@ -43,6 +47,123 @@ class _classesState extends State<classes> {
           ),
           child: Stack(
             children: [
+              Positioned(
+                top: 10,
+                left: 13,
+                child: InkWell(
+                    onTap: () async {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            backgroundColor: Color(0xff97d2b3),
+                            title: Row(
+                              children: [
+                                Spacer(),
+                                PharseText(pharse: "افزودن درس جدید", color: backgroundColor, size: 20,),
+                                Icon(
+                                  Icons.school_sharp,
+                                  color: backgroundColor,),
+                              ],
+                            ),
+                            content: Container(
+                              width: 300,
+                              height: 80,
+                              child: Column(
+                                children: [
+                                  SizedBox(height: 8,),
+                                  FieldBox(labelText: "کد درس", controller: codeController, hintText: "کد درس گلستان را وارد کنید" ),
+                                ],
+                              ),
+                            ),
+                            actions: [
+                              InkWell(
+                                  onTap: () async {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        alignment: Alignment.centerRight,
+                                        width: 256,
+                                        height: 60,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(15),
+                                          color: Color(0xff003b11),
+                                          border: Border.all(
+                                            color: Color(0xff003b11),
+                                            width: 3.5,
+                                          ),
+                                        ),
+                                        child: const Row(
+                                          children: [
+                                            SizedBox(width: 103,),
+                                            Text(
+                                              'افزودن',
+
+                                              style: TextStyle(
+                                                color: Colors.white70,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w300,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                              )
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    child: Row(
+                      children: [
+                        Container(
+                          alignment: Alignment.center,
+                          width: 150,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: buttonColor,
+                          ),
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+
+                              Text(
+                                'افزودن کلاس',
+                                style: TextStyle(
+                                  color: backgroundColor,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              Icon(
+                                Icons.add,
+                                color: backgroundColor,
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    )
+                ),
+              ),
+              Positioned(
+                top: x*220+100,
+                  right:  5,
+                  child: Column(
+                    children: [
+                      CardForClases(title: 'Ap', teacher: 'sadegh', unit: '3', numberOfHomework: '1', bestStudent: 'Hana'),
+                      SizedBox(height: 10,),
+                      CardForClases(title: 'Math2', teacher: 'maryam', unit: '3', numberOfHomework: '2', bestStudent: 'Hana')
+                    ],
+                  ),
+              )
 
             ],
           ),
@@ -143,4 +264,77 @@ class _classesState extends State<classes> {
 
     );
   }
+}
+
+class CardForClases extends StatelessWidget{
+  String title;
+  String teacher;
+  String unit;
+  String numberOfHomework;
+  String bestStudent;
+  @override
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Container(
+        //alignment: Alignment.topCenter,
+        width: 380,
+        height: 210,
+        child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+            elevation: 10,
+            margin: EdgeInsets.all(10),
+            color: _classesState.textColor,
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ListTile(
+                  title: Row(
+                    children: [
+                      Icon(Icons.school_outlined, size: 34, color: _classesState.backgroundColor,),
+                      SizedBox(width: 5,),
+                      Text(
+                        title,
+                        style: TextStyle(
+                          color: _classesState.backgroundColor,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                  subtitle: Row(
+                    children: [
+                      Column(
+                        children: [
+                          Text(
+                              'استاد : $teacher\nتعداد واحد : $unit\nتکالیف باقی مانده : $numberOfHomework\nشاگرد ممتاز : $bestStudent ',
+                              style: TextStyle(
+                                  fontSize: 16,
+                                color: _classesState.backgroundColor,
+                              )
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  CardForClases(
+      {required this.title,
+        required this.teacher,
+        required this.unit,
+        required this.numberOfHomework,
+        required this.bestStudent});
 }

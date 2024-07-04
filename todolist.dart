@@ -194,7 +194,7 @@ class _todolistState extends State<todolist> {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                backgroundColor: Color(0xFF005D4A),
+                backgroundColor: Color(0xff97d2b3),
                 title: Row(
                   children: [
                     Spacer(),
@@ -249,7 +249,7 @@ class _todolistState extends State<todolist> {
                             height: 60,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
-                              color: Colors.white70,
+                              color: Color(0xff003b11),
                               border: Border.all(
                                 color: Color(0xff003b11),
                                 width: 3.5,
@@ -262,7 +262,7 @@ class _todolistState extends State<todolist> {
                                   'افزودن',
 
                                   style: TextStyle(
-                                    color: textColor,
+                                    color: Colors.white70,
                                     fontSize: 20,
                                     fontWeight: FontWeight.w300,
                                   ),
