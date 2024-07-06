@@ -1,3 +1,6 @@
+import 'dart:ffi';
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:test/Helpful.dart';
@@ -7,6 +10,8 @@ import 'package:test/projects.dart';
 import 'package:test/todolist.dart';
 
 class classes extends StatefulWidget{
+  int id;
+  classes(this.id);
   @override
   State<classes> createState() => _classesState();
 }
@@ -16,6 +21,8 @@ class _classesState extends State<classes> {
   static const textColor = Color(0xFF024335);
   static const backgroundColor = Color(0xFFE6F6EF);
   final codeController = TextEditingController();
+  String response = '';
+  List<PositionedHolder> list = [];
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +98,23 @@ class _classesState extends State<classes> {
                             actions: [
                               InkWell(
                                   onTap: () async {
+                                    addClass();
                                     Navigator.of(context).pop();
+                                    print('----- reponse = $response');
+                                    if(response == 'not found'){
+                                      erorNotFound();
+                                    }else{
+                                      List<String> parts = response.split('-');
+                                      list.add(PositionedHolder(
+                                          top: x*220+100,
+                                          right:  5,
+                                          child: CardForClases(title: 'Ap', teacher: 'sadegh', unit: '3', numberOfHomework: '1', bestStudent: 'Hana'),
+                                      )
+                                      );
+                                      x++;
+                                    }
+                                    response = '';
+                                    //codeController.clear();
                                   },
                                   child: Row(
                                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -164,17 +187,11 @@ class _classesState extends State<classes> {
                     )
                 ),
               ),
-              Positioned(
-                top: x*220+100,
-                  right:  5,
-                  child: Column(
-                    children: [
-                      CardForClases(title: 'Ap', teacher: 'sadegh', unit: '3', numberOfHomework: '1', bestStudent: 'Hana'),
-                      SizedBox(height: 10,),
-                      CardForClases(title: 'Math2', teacher: 'maryam', unit: '3', numberOfHomework: '2', bestStudent: 'Hana')
-                    ],
-                  ),
-              )
+              for(PositionedHolder p in list)
+                Positioned(
+                    top: p.top,
+                    right: p.right ,
+                    child: p.child),
 
             ],
           ),
@@ -193,7 +210,7 @@ class _classesState extends State<classes> {
               onPressed: () => setState(
                     () {
                   Navigator.pushReplacement(context, MaterialPageRoute(
-                    builder: (context) => projects(),
+                    builder: (context) => projects(widget.id),
                   ));
                 },
               ),
@@ -208,7 +225,7 @@ class _classesState extends State<classes> {
               onPressed: () => setState(
                     () {
                   Navigator.pushReplacement(context, MaterialPageRoute(
-                    builder: (context) => news(),
+                    builder: (context) => news(widget.id),
                   ));
                 },
               ),
@@ -231,7 +248,7 @@ class _classesState extends State<classes> {
                   onPressed: () => setState(
                         () {
                       Navigator.pushReplacement(context, MaterialPageRoute(
-                        builder: (context) => todolist(),
+                        builder: (context) => todolist(widget.id),
                       ));
                     },
                   ),
@@ -248,7 +265,7 @@ class _classesState extends State<classes> {
               onPressed: () => setState(
                     () {
                   Navigator.pushReplacement(context, MaterialPageRoute(
-                    builder: (context) => todolist(),
+                    builder: (context) => todolist(widget.id),
                   ));
                 },
               ),
@@ -272,7 +289,89 @@ class _classesState extends State<classes> {
           ],
         ),
       ),
+    );
+  }
 
+  Future<String> addClass() async {
+    await Socket.connect("192.168.141.145", 8000).then((serverSocket) {
+      serverSocket.write('addClass\u0000');
+      print(codeController.text);
+      serverSocket.write('${codeController.text}\u0000');
+      serverSocket.flush();
+      serverSocket.listen((socketResponse) {
+        setState(() {
+          response = String.fromCharCodes(socketResponse);
+        });
+      });
+    });
+    print("---------- server response is:  { $response }");
+    return response;
+  }
+
+  void erorNotFound(){
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: Row(
+            children: [
+              Spacer(),
+              PharseText(pharse: "کلاس مورد نظر در گلستان وجود ندارد", color: buttonColor, size: 15.5,),
+              Icon(
+                Icons.error_outline,
+                color: buttonColor,
+                size: 25,
+              ),
+            ],
+          ),
+          content: Container(
+            width: 300,
+            height: 35,
+            child: Column(
+              children: [
+                PharseText(pharse: 'دوباره امتحان کنید', color: buttonColor, size: 20)
+              ],
+            ),
+          ),
+          actions: [
+            InkWell(
+                onTap: () async {
+                    Navigator.of(context).pop();
+                },
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      alignment: Alignment.centerRight,
+                      width: 256,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: buttonColor,
+                      ),
+                      child: const Row(
+                        children: [
+                          SizedBox(width: 103,),
+                          Text(
+                            'فهمیدم',
+
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                )
+            )
+          ],
+        );
+      },
     );
   }
 }
@@ -288,7 +387,6 @@ class CardForClases extends StatelessWidget{
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Container(
-        //alignment: Alignment.topCenter,
         width: 380,
         height: 210,
         child: Card(
@@ -349,3 +447,4 @@ class CardForClases extends StatelessWidget{
         required this.numberOfHomework,
         required this.bestStudent});
 }
+

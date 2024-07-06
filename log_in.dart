@@ -201,7 +201,7 @@ class _login_pageState extends State<login_page> {
   }
 
   Future<String> logIn() async {
-    await Socket.connect("192.168.1.35", 8000).then((serverSocket) {
+    await Socket.connect("192.168.141.145", 8000).then((serverSocket) {
       serverSocket.write('login\u0000');
       serverSocket.write('${usernameController.text}-${idController.text}-${passwordController.text}\u0000');
       serverSocket.flush();
