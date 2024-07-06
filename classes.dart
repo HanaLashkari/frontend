@@ -22,15 +22,28 @@ class _classesState extends State<classes> {
   static const backgroundColor = Color(0xFFE6F6EF);
   final codeController = TextEditingController();
   String response = '';
-  List<PositionedHolder> list = [];
+  List<String> list = [];
+
+  @override
+  void initState()  {
+    super.initState();
+    showClasses().then((response) {
+      setState(() {
+        print('------3-090-103-03--0----here ====== reponse = $response ');
+        list = response.split("=");
+
+      });
+    }).catchError((error) {
+
+    });
+    }
+
 
   @override
   Widget build(BuildContext context) {
     double heightOfScreen = MediaQuery.of(context).size.height;
     double widthOfScreen = MediaQuery.of(context).size.width;
-    double x = 0;
-    response = showClasses().toString();
-    print('------3-090-103-03--0----here ====== reponse = $response');
+    int x = list.length;
     return Scaffold(
       appBar: AppBar(
         title: Text('صفحه کلاسا'),
@@ -105,15 +118,9 @@ class _classesState extends State<classes> {
                                     print('----- reponse = $response');
                                     if(response == 'not found'){
                                       erorNotFound();
-                                    }else{
-                                      List<String> parts = response.split('-');
-                                      list.add(PositionedHolder(
-                                          top: x*220+100,
-                                          right:  5,
-                                          child: CardForClases(title: 'Ap', teacher: 'sadegh', unit: '3', numberOfHomework: '1', bestStudent: 'Hana'),
-                                      )
-                                      );
-                                      x++;
+                                    }else if(response == 'found'){
+                                      Navigator.pushReplacement(context, MaterialPageRoute(
+                                          builder: (context) => projects(widget.id)));
                                     }
                                     response = '';
                                     //codeController.clear();
@@ -189,11 +196,11 @@ class _classesState extends State<classes> {
                     )
                 ),
               ),
-              for(PositionedHolder p in list)
+              for(int i=0 ; i<x ; i++)
                 Positioned(
-                    top: p.top,
-                    right: p.right ,
-                    child: p.child),
+                    top: i*220+100,
+                    right: 5 ,
+                    child: CardForClases(title: list[i].split("-")[0], teacher: list[i].split("-")[1], unit: list[i].split("-")[2], numberOfHomework: list[i].split("-")[3], bestStudent: list[i].split("-")[4])),
 
             ],
           ),
@@ -295,32 +302,41 @@ class _classesState extends State<classes> {
   }
 
   Future<String> addClass() async {
-    await Socket.connect("192.168.141.145", 8000).then((serverSocket) {
-      serverSocket.write('addClass\u0000');
-      print(codeController.text);
-      serverSocket.write('${codeController.text}\u0000');
-      serverSocket.flush();
-      serverSocket.listen((socketResponse) {
-        setState(() {
-          response = String.fromCharCodes(socketResponse);
-        });
-      });
+    final socket = await Socket.connect("192.168.141.145", 8000);
+    socket.write('addClass\u0000');
+    socket.write('${codeController.text}\u0000');
+    socket.flush();
+
+    final responseBuffer = StringBuffer();
+    socket.listen((socketResponse) {
+      responseBuffer.write(String.fromCharCodes(socketResponse));
+    }, onDone: () {
+      socket.close();
     });
-    print("---------- server response is:  { $response }");
+
+    await socket.done;  // Wait for the socket to be closed
+    setState(() {
+      response = responseBuffer.toString();
+    });
     return response;
   }
 
   Future<String> showClasses() async {
-    await Socket.connect("192.168.141.145", 8000).then((serverSocket) {
-      serverSocket.write('showClasses\u0000');
-      serverSocket.flush();
-      serverSocket.listen((socketResponse) {
-        setState(() {
-          response = String.fromCharCodes(socketResponse);
-        });
-      });
+    final socket = await Socket.connect("192.168.141.145", 8000);
+    socket.write('showClasses\u0000');
+    socket.flush();
+
+    final responseBuffer = StringBuffer();
+    socket.listen((socketResponse) {
+      responseBuffer.write(String.fromCharCodes(socketResponse));
+    }, onDone: () {
+      socket.close();
     });
-    print("---------- server response is:  { $response }");
+
+    await socket.done;  // Wait for the socket to be closed
+    setState(() {
+      response = responseBuffer.toString();
+    });
     return response;
   }
 
