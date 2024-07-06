@@ -16,7 +16,7 @@ class _todolistState extends State<todolist> {
   static const buttonColor = Color(0xffbb0000);
   static const textColor = Color(0xFF024335);
   static const backgroundColor = Color(0xFFE6F6EF);
-  final titleController = TextEditingController(); 
+  final titleController = TextEditingController();
   final hourController = TextEditingController();
   final minuteController = TextEditingController();
   @override

@@ -9,6 +9,8 @@ import 'package:test/todolist.dart';
 import 'package:test/user_information.dart';
 
 class home extends StatefulWidget{
+  int id = 402243094;
+  //home(this.id);
   @override
   State<home> createState() => _homeState();
 }
@@ -166,7 +168,7 @@ class _homeState extends State<home> {
               onPressed: () => setState(
                     () {
                       Navigator.pushReplacement(context, MaterialPageRoute(
-                        builder: (context) => projects(),
+                        builder: (context) => projects(widget.id),
                       ));
                 },
               ),
@@ -181,7 +183,7 @@ class _homeState extends State<home> {
               onPressed: () => setState(
                     () {
                       Navigator.pushReplacement(context, MaterialPageRoute(
-                        builder: (context) => news(),
+                        builder: (context) => news(widget.id),
                       ));
                 },
               ),
@@ -196,7 +198,7 @@ class _homeState extends State<home> {
               onPressed: () => setState(
                     () {
                       Navigator.pushReplacement(context, MaterialPageRoute(
-                        builder: (context) => classes(),
+                        builder: (context) => classes(widget.id),
                       ));
                 },
               ),
@@ -211,7 +213,7 @@ class _homeState extends State<home> {
               onPressed: () => setState(
                     () {
                       Navigator.pushReplacement(context, MaterialPageRoute(
-                        builder: (context) => todolist(),
+                        builder: (context) => todolist(widget.id),
                       ));
                 },
               ),

@@ -29,6 +29,8 @@ class _classesState extends State<classes> {
     double heightOfScreen = MediaQuery.of(context).size.height;
     double widthOfScreen = MediaQuery.of(context).size.width;
     double x = 0;
+    response = showClasses().toString();
+    print('------3-090-103-03--0----here ====== reponse = $response');
     return Scaffold(
       appBar: AppBar(
         title: Text('صفحه کلاسا'),
@@ -297,6 +299,20 @@ class _classesState extends State<classes> {
       serverSocket.write('addClass\u0000');
       print(codeController.text);
       serverSocket.write('${codeController.text}\u0000');
+      serverSocket.flush();
+      serverSocket.listen((socketResponse) {
+        setState(() {
+          response = String.fromCharCodes(socketResponse);
+        });
+      });
+    });
+    print("---------- server response is:  { $response }");
+    return response;
+  }
+
+  Future<String> showClasses() async {
+    await Socket.connect("192.168.141.145", 8000).then((serverSocket) {
+      serverSocket.write('showClasses\u0000');
       serverSocket.flush();
       serverSocket.listen((socketResponse) {
         setState(() {
