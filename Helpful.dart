@@ -309,7 +309,9 @@ class ProjectHandler{
   String estimatedTime;
   String description;
   String grade;
-  ProjectHandler({required this.title ,required this.dataTime , required this.grade , required this.description , required this.estimatedTime });
+  String hour;
+  String deadline;
+  ProjectHandler({required this.title ,required this.dataTime , required this.grade , required this.description , required this.estimatedTime , required this.hour , required this.deadline});
   DateTime dateTime(){return this.dataTime;}
 }
 

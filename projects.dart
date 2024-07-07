@@ -21,7 +21,8 @@ class _projectsState extends State<projects> {
   static const textColor = Color(0xFF024335);
   static const backgroundColor = Color(0xFFE6F6EF);
   String response = '';
-   List<ProjectHandler> projects = [];
+  final dateContoroller = TextEditingController();
+  List<ProjectHandler> projects = [];
   List<ProjectHandler> past = [];
   List<ProjectHandler> future = [];
 
@@ -39,6 +40,8 @@ class _projectsState extends State<projects> {
               title: parts[0],
               dataTime: DateTime(int.parse(timeList[0].split("/")[0]) , int.parse(timeList[0].split("/")[1]) , int.parse(timeList[0].split("/")[2]) ,
                   int.parse(timeList[1].split(":")[0]) , int.parse(timeList[1].split(":")[1])),
+              hour: timeList[1],
+              deadline: timeList[0],
               grade: parts[2],
               description: parts[3],
               estimatedTime: timeList[2]));
@@ -103,7 +106,11 @@ class _projectsState extends State<projects> {
           child: Stack(
             children: [
               Positioned(
-                  top: 20,
+                top: 25,
+                  left: 20,
+                  child: LittleFieldBox(labelText: 'تاریخ', controller: dateContoroller, hintText:  'مثال : 2024/02/03' , width: 180,)),
+              Positioned(
+                  top: 40,
                   right: 25,
                   child: Text(
                     'تمرینا',
@@ -114,10 +121,22 @@ class _projectsState extends State<projects> {
                     ),
                   )
               ),
+              for(int i=0 ; i<future.length ; i++)
+                Positioned(
+                    top: i*80+110,
+                    right: 16 ,
+                    child: ProjectBox(b: true, title: future[i].title, deadline: future[i].deadline, time: future[i].hour, explainServer: future[i].description, explainClient: "توضیحات تحویل", grade: future[i].grade , esatimatedTime: future[i].estimatedTime,)
+                ),
+              for(int i=0 ; i<past.length ; i++)
+                Positioned(
+                    top: i*80+110,
+                    right: 16 ,
+                    child: ProjectBox(b: false, title: past[i].title, deadline: past[i].deadline, time: past[i].hour, explainServer: past[i].description, explainClient: "توضیحات تحویل", grade: past[i].grade , esatimatedTime:  past[i].estimatedTime,)
+                ),
               Positioned(
-                top: 80,
+                top: 500,
                   right: 16,
-                  child: ProjectBox(b: true, title: 'AP project', deadline: '1403/04/17', grade: '10' , time: '72',explainClient: 'helppppppp',explainServer: 'dart and flutter',)
+                  child: ProjectBox(b: true, title: 'AP project', deadline: '1403/04/17', grade: '10' , time: '72',explainClient: 'helppppppp',explainServer: 'dart and flutter',  esatimatedTime: '5',)
               ),
             ],
           ),
@@ -247,6 +266,7 @@ class ProjectBox extends StatefulWidget{
   String explainServer;
   String explainClient;
   String grade;
+  String esatimatedTime;
   ProjectBox(
       {required this.b,
         required this.title,
@@ -254,6 +274,7 @@ class ProjectBox extends StatefulWidget{
         required this.time,
         required this.explainServer,
         required this.explainClient,
+        required this.esatimatedTime,
         required this.grade});
 
   @override
@@ -312,11 +333,11 @@ class _ProjectBoxState extends State<ProjectBox> {
                         ),
                         Positioned(
                             right: 10,
-                            top: 60,
+                            top: widget.b? 70 : 80,
                             child: Row(
                               children: [
-                                PharseText(pharse: 'زمان تخمینی باقی مانده : ', color: _projectsState.textColor, size: 18),
-                                LittleFieldBox(labelText: widget.time, controller: timeController, hintText: widget.time, width: 50),
+                                PharseText(pharse: 'زمان تخمینی : ', color: _projectsState.textColor, size: 18),
+                                widget.b ? LittleFieldBox(labelText: widget.esatimatedTime, controller: timeController, hintText: widget.time, width: 70) : PharseText(pharse: widget.esatimatedTime, color: _projectsState.textColor, size: 18),
                               ],
                             )
                         ),
@@ -330,7 +351,7 @@ class _ProjectBoxState extends State<ProjectBox> {
                             top: 160,
                             child: SizedBox(
                               width: 240,
-                              child: TextFormField(
+                              child: widget.b?TextFormField(
                                 controller: serverController,
                                 textAlign: TextAlign.left,
                                 decoration: InputDecoration(
@@ -360,7 +381,7 @@ class _ProjectBoxState extends State<ProjectBox> {
                                   ),
                                   contentPadding: EdgeInsets.symmetric(vertical: 30.0 , horizontal: 10),
                                 ),
-                              ),
+                              ):PharseText(pharse: widget.explainServer, color: _projectsState.textColor, size: 18),
                             )
 
                         ),
@@ -375,9 +396,9 @@ class _ProjectBoxState extends State<ProjectBox> {
                             child: PharseText(pharse: 'بارگذاری تمرین : ', color: _projectsState.textColor, size: 18)
                         ),
                         Positioned(
-                            right: 140,
-                            top: 275,
-                            child: LittleFieldBox(labelText: 'خلاصه بگو', controller: clientController, hintText: 'خلاصه بگو', width: 100)
+                            right: widget.b? 140 : 135,
+                            top: widget.b? 275 : 295,
+                            child: widget.b?LittleFieldBox(labelText: 'خلاصه بگو', controller: clientController, hintText: 'خلاصه بگو', width: 100):PharseText(pharse: widget.explainClient, color: _projectsState.textColor, size: 18),
                         ),
                       ],
                     )
@@ -437,7 +458,7 @@ class _ProjectBoxState extends State<ProjectBox> {
           child: Stack(
             children: [
               Positioned(left: 10, top: 17 ,child: PharseText(pharse: widget.deadline, color: _projectsState.backgroundColor, size: 15)),
-              Positioned(right: 45 , top: 12,child: PharseText(pharse: widget.title, color: _projectsState.backgroundColor, size: 20)),
+              Positioned(right: 45 , top: 12,child: widget.b? PharseText(pharse: widget.title, color: _projectsState.backgroundColor, size: 20) : Text(widget.title , style: TextStyle(color: _projectsState.backgroundColor , fontSize: 20 , fontWeight: FontWeight.w300, decoration: TextDecoration.lineThrough , decorationColor: _projectsState.backgroundColor ))),
               Positioned(right: 10 , top: 13 ,child: Icon(widget.b ? Icons.circle_outlined : Icons.task_alt_outlined, size: 32, color: _projectsState.backgroundColor,)),
             ],
           ),
