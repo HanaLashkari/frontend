@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -18,6 +20,59 @@ class _projectsState extends State<projects> {
   static const buttonColor = Color(0xffbb0000);
   static const textColor = Color(0xFF024335);
   static const backgroundColor = Color(0xFFE6F6EF);
+  String response = '';
+   List<ProjectHandler> projects = [];
+  List<ProjectHandler> past = [];
+  List<ProjectHandler> future = [];
+
+  @override
+  void initState()  {
+    super.initState();
+    showAssignment().then((response) {
+      setState(() {
+        print('------3-090-103-03--0----here ====== reponse = $response ');
+        List<String> list = response.split("=");
+        for(String s in list){
+          List<String> parts = s.split("-");
+          List<String> timeList = parts[1].split(",");
+          projects.add(ProjectHandler(
+              title: parts[0],
+              dataTime: DateTime(int.parse(timeList[0].split("/")[0]) , int.parse(timeList[0].split("/")[1]) , int.parse(timeList[0].split("/")[2]) ,
+                  int.parse(timeList[1].split(":")[0]) , int.parse(timeList[1].split(":")[1])),
+              grade: parts[2],
+              description: parts[3],
+              estimatedTime: timeList[2]));
+        }
+        projects.sort((ProjectHandler a, ProjectHandler b) {
+// اگر هر دو تاریخ در گذشته یا آینده هستند، بر اساس زمان مرتب میشوند
+          if ((a.dateTime().isBefore(DateTime.now()) && b.dateTime().isBefore(DateTime.now())) ||
+              (a.dateTime().isAfter(DateTime.now()) && b.dateTime().isAfter(DateTime.now()))) {
+            return a.dateTime().compareTo(b.dateTime());
+          } else if (a.dateTime().isBefore(DateTime.now())) {
+// 'a' گذشته است و 'b' آینده است، 'a' اول قرار میگیرد
+            return -1;
+          } else {
+// 'a' آینده است و 'b' گذشته است، 'b' اول قرار میگیرد
+            return 1;
+          }
+        });
+        for(ProjectHandler p in projects) {
+          print(p.title);
+          if(p.dateTime().isBefore(DateTime.now()))
+            past.add(p);
+          else if(p.dateTime().isAfter(DateTime.now()) || p.dataTime == DateTime.now())
+            future.add(p);
+        }
+        for(ProjectHandler p in future)
+          print("future = ${p.title}");
+        for(ProjectHandler p in past)
+          print("past = ${p.title}");
+      });
+    }).catchError((error) {
+
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     double heightOfScreen = MediaQuery.of(context).size.height;
@@ -162,6 +217,25 @@ class _projectsState extends State<projects> {
       ),
 
     );
+  }
+
+  Future<String> showAssignment() async {
+    final socket = await Socket.connect("192.168.141.145", 8000);
+    socket.write('showAssignment\u0000');
+    socket.flush();
+
+    final responseBuffer = StringBuffer();
+    socket.listen((socketResponse) {
+      responseBuffer.write(String.fromCharCodes(socketResponse));
+    }, onDone: () {
+      socket.close();
+    });
+
+    await socket.done;  // Wait for the socket to be closed
+    setState(() {
+      response = responseBuffer.toString();
+    });
+    return response;
   }
 }
 

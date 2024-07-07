@@ -38,7 +38,6 @@ class _classesState extends State<classes> {
     });
     }
 
-
   @override
   Widget build(BuildContext context) {
     double heightOfScreen = MediaQuery.of(context).size.height;

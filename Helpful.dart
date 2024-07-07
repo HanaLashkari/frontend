@@ -303,10 +303,13 @@ class _ToDoListState extends State<ToDoList> {
   }
 }
 
-class PositionedHolder{
-  double top;
-  double right;
-  Widget child;
-  PositionedHolder({required this.child , this.right = 0 , this.top = 0 });
+class ProjectHandler{
+  String title;
+  DateTime dataTime;
+  String estimatedTime;
+  String description;
+  String grade;
+  ProjectHandler({required this.title ,required this.dataTime , required this.grade , required this.description , required this.estimatedTime });
+  DateTime dateTime(){return this.dataTime;}
 }
 
