@@ -1,5 +1,7 @@
 import 'dart:ffi';
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:project/todolist.dart';
 
 class FieldBox extends StatelessWidget{
   const FieldBox({super.key , required this.labelText,required this.controller , required this.hintText});
@@ -216,9 +218,11 @@ class Eror_password extends StatelessWidget{
 }
 
 class ToDoList extends StatefulWidget{
-  ToDoList({required this.pharse , required this.b});
-  String pharse;
+  ToDoList({required this.title , required this.b , required this.firstStr , required this.id});
+  String title;
   bool b;
+  String firstStr;
+  int id;
   @override
   static const buttonColor = Color(0xffbb0000);
   static const textColor = Color(0xFF024335);
@@ -257,11 +261,13 @@ class _ToDoListState extends State<ToDoList> {
               top: 13,
               right: 10,
               child: Text(
-              widget.pharse,
+              widget.title,
               style: TextStyle(
                 color: widget.b ? ToDoList.textColor : ToDoList.buttonColor,
                 fontWeight: FontWeight.w600,
                 fontSize: 15,
+                decoration: widget.b?TextDecoration.none : TextDecoration.lineThrough,
+                decorationColor: ToDoList.buttonColor
               ),
             ),),
             Positioned(
@@ -290,6 +296,10 @@ class _ToDoListState extends State<ToDoList> {
                         ),
                         onPressed: () => setState(
                               () {
+                                doTask(widget.firstStr);
+                                Navigator.pushReplacement(context, MaterialPageRoute(
+                                  builder: (context) => page(widget.id),
+                                ));
                           },
                         ),
                       ),
@@ -299,7 +309,12 @@ class _ToDoListState extends State<ToDoList> {
         ]
         )
     );
-
+  }
+  Future<void> doTask(String s) async {
+    final socket = await Socket.connect("192.168.141.145", 8000);
+    socket.write('doTask\u0000');
+    socket.write('${s}\u0000');
+    socket.flush();
   }
 }
 
@@ -314,5 +329,38 @@ class ProjectHandler{
   String deadline;
   ProjectHandler({required this.firstString , required this.title ,required this.dataTime , required this.grade , required this.description , required this.estimatedTime , required this.hour , required this.deadline});
   DateTime dateTime(){return this.dataTime;}
+}
+
+class ToDoListHandlaer{
+  String firstString;
+  String title;
+  DateTime dataTime;
+  String minute;
+  String hour;
+  String isDone;
+  ToDoListHandlaer({required this.firstString , required this.title ,required this.dataTime , required this.hour , required this.minute , required this.isDone});
+  DateTime dateTime(){return this.dataTime;}
+}
+
+class page extends StatefulWidget{
+  int id;
+  page(this.id);
+  @override
+  State<page> createState() => _pageState();
+}
+
+class _pageState extends State<page> {
+  @override
+  void initState()  {
+    super.initState();
+    Navigator.pushReplacement(context, MaterialPageRoute(
+      builder: (context) => todolist(widget.id),
+    ));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold();
+  }
 }
 

@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:test/Helpful.dart';
-import 'package:test/classes.dart';
-import 'package:test/news.dart';
+import 'package:project/Helpful.dart';
+import 'package:project/classes.dart';
+import 'package:project/news.dart';
 import 'home.dart';
-import 'package:test/todolist.dart';
+import 'package:project/todolist.dart';
 
 class projects extends StatefulWidget{
   int id;
@@ -142,7 +142,7 @@ class _projectsState extends State<projects> {
                   onPressed: () => setState(
                         () {
                       Navigator.pushReplacement(context, MaterialPageRoute(
-                        builder: (context) => todolist(widget.id),
+                        builder: (context) => home(widget.id),
                       ));
                     },
                   ),
@@ -204,7 +204,7 @@ class _projectsState extends State<projects> {
               onPressed: () => setState(
                     () {
                   Navigator.pushReplacement(context, MaterialPageRoute(
-                    builder: (context) => home(),
+                    builder: (context) => home(widget.id),
                   ));
                 },
               ),
@@ -213,7 +213,6 @@ class _projectsState extends State<projects> {
           ],
         ),
       ),
-
     );
   }
 
@@ -229,7 +228,7 @@ class _projectsState extends State<projects> {
       socket.close();
     });
 
-    await socket.done;  // Wait for the socket to be closed
+    await socket.done;
     setState(() {
       response = responseBuffer.toString();
     });
@@ -433,7 +432,7 @@ class _ProjectBoxState extends State<ProjectBox> {
                 actions: [
                   InkWell(
                       onTap: () async {
-                        if(timeController.text != widget.esatimatedTime && serverController.text != widget.explainServer && clientController.text != widget.explainClient)
+                        if(timeController.text != widget.esatimatedTime || serverController.text != widget.explainServer || clientController.text != widget.explainClient)
                           changeDescription(widget.title, timeController, serverController, clientController);
                         Navigator.of(context).pop();
                       },
@@ -498,7 +497,7 @@ class _ProjectBoxState extends State<ProjectBox> {
     final socket = await Socket.connect("192.168.141.145", 8000);
     socket.write('changeDescription\u0000');
     socket.write('$title\u0000');
-    socket.write('${estimated.text}-${server.text}-${client.text}\u0000');
+    socket.write('${estimated.text.trim().isNotEmpty ? estimated.text : widget.esatimatedTime}-${server.text.trim().isNotEmpty ? server.text : widget.explainServer}-${client.text.trim().isNotEmpty ? client.text : widget.explainClient}\u0000');
     socket.flush();
     timeController.clear();
     serverController.clear();

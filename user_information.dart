@@ -2,13 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:test/home.dart';
+import 'package:project/home.dart';
 
 import 'Helpful.dart';
 
 class user_profile extends StatefulWidget{
   String info;
-  user_profile({ required this.info});
+  user_profile({ required this.info , required this.id});
+  int id;
   @override
   State<user_profile> createState() => _user_profileState(info: info);
 }
@@ -40,7 +41,7 @@ class _user_profileState extends State<user_profile> {
           onPressed: () => setState(
                 () {
                   Navigator.pushReplacement(context, MaterialPageRoute(
-                    builder: (context) => home(),
+                    builder: (context) => home(widget.id),
                   ));
             },
           ),

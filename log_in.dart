@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:test/Helpful.dart';
+import 'package:project/Helpful.dart';
 import 'package:flutter/material.dart';
-import 'package:test/sign_up.dart';
+import 'package:project/sign_up.dart';
 
 class login_page extends StatefulWidget{
   @override

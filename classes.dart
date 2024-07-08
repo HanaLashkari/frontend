@@ -3,11 +3,11 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:test/Helpful.dart';
+import 'package:project/Helpful.dart';
 import 'home.dart';
-import 'package:test/news.dart';
-import 'package:test/projects.dart';
-import 'package:test/todolist.dart';
+import 'package:project/news.dart';
+import 'package:project/projects.dart';
+import 'package:project/todolist.dart';
 
 class classes extends StatefulWidget{
   int id;
@@ -256,7 +256,7 @@ class _classesState extends State<classes> {
                   onPressed: () => setState(
                         () {
                       Navigator.pushReplacement(context, MaterialPageRoute(
-                        builder: (context) => todolist(widget.id),
+                        builder: (context) => home(widget.id),
                       ));
                     },
                   ),
@@ -288,7 +288,7 @@ class _classesState extends State<classes> {
               onPressed: () => setState(
                     () {
                   Navigator.pushReplacement(context, MaterialPageRoute(
-                    builder: (context) => home(),
+                    builder: (context) => home(widget.id),
                   ));
                 },
               ),
@@ -332,7 +332,7 @@ class _classesState extends State<classes> {
       socket.close();
     });
 
-    await socket.done;  // Wait for the socket to be closed
+    await socket.done;
     setState(() {
       response = responseBuffer.toString();
     });

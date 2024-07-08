@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:test/Helpful.dart';
-import 'package:test/classes.dart';
-import 'package:test/news.dart';
-import 'package:test/projects.dart';
-import 'package:test/todolist.dart';
-import 'package:test/user_information.dart';
+import 'package:project/Helpful.dart';
+import 'package:project/classes.dart';
+import 'package:project/news.dart';
+import 'package:project/projects.dart';
+import 'package:project/todolist.dart';
+import 'package:project/user_information.dart';
 
 class home extends StatefulWidget{
   int id = 402243094;
-  //home(this.id);
+  home(this.id);
   @override
   State<home> createState() => _homeState();
 }
@@ -63,7 +63,7 @@ class _homeState extends State<home> {
                       onPressed: () => setState(
                             () {
                           Navigator.pushReplacement(context, MaterialPageRoute(
-                            builder: (context) => user_profile(info: 'here'),
+                            builder: (context) => user_profile(id: 402243094, info: 'here'),
                           ));
                         },
                       ),
@@ -122,11 +122,11 @@ class _homeState extends State<home> {
                   right: 16,
                   child: Column(
                     children: [
-                      ToDoList(pharse: 'پروژه برنامه نویسی پیشرفته' , b: true,),
+                      ToDoList(title: 'پروژه برنامه نویسی پیشرفته' , b: true, firstStr: '',id: widget.id),
                       SizedBox(height: 15,),
-                      ToDoList(pharse: 'تکلیف الکترونیک' , b: true,),
+                      ToDoList(title: 'تکلیف الکترونیک' , b: true, firstStr: '',id: widget.id),
                       SizedBox(height: 15,),
-                      ToDoList(pharse: 'تکلیف سری ها' , b: true,),
+                      ToDoList(title: 'تکلیف سری ها' , b: true, firstStr: '',id: widget.id),
                     ],
                   )), //column for to do list
               Positioned(
@@ -236,7 +236,7 @@ class _homeState extends State<home> {
                   onPressed: () => setState(
                         () {
                           Navigator.pushReplacement(context, MaterialPageRoute(
-                            builder: (context) => home(),
+                            builder: (context) => home(widget.id),
                           ));
                     },
                   ),

@@ -1,8 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:test/Helpful.dart';
-import 'package:test/classes.dart';
-import 'package:test/news.dart';
-import 'package:test/projects.dart';
+import 'package:project/Helpful.dart';
+import 'package:project/classes.dart';
+import 'package:project/news.dart';
+import 'package:project/projects.dart';
 import 'home.dart';
 
 class todolist extends StatefulWidget{
@@ -19,12 +21,30 @@ class _todolistState extends State<todolist> {
   final titleController = TextEditingController();
   final hourController = TextEditingController();
   final minuteController = TextEditingController();
+  String response = '';
+  List<ToDoListHandlaer> doneList = [];
+  List<ToDoListHandlaer> notDoneList = [];
+  List<ToDoListHandlaer> todolist = [];
+  List<String> listStrings = [];
+
+  @override
+  void initState()  {
+    super.initState();
+    showToDoList().then((response) {
+      setState(() {
+        print('------3-090-103-03--0----here ====== reponse = $response ');
+        listStrings = response.split("=");
+        setlists(listStrings, DateTime.now());
+      });
+    }).catchError((error) {
+
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     double heightOfScreen = MediaQuery.of(context).size.height;
     double widthOfScreen = MediaQuery.of(context).size.width;
-    int countOfToDoListBox = -10+2;
-    int countOfDoneWorkBox = -4 + 2;
     return Scaffold(
       appBar: AppBar(
         title: Text('صفحه کارا'),
@@ -32,7 +52,7 @@ class _todolistState extends State<todolist> {
       body: SingleChildScrollView(
         child: Container(
           width: widthOfScreen,
-          height: countOfToDoListBox+countOfDoneWorkBox>12 ? heightOfScreen+(countOfToDoListBox+countOfDoneWorkBox)*85 : heightOfScreen,
+          height: notDoneList.length+doneList.length>7 ? heightOfScreen+(notDoneList.length+doneList.length-8)*80 : heightOfScreen,
           decoration: BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.topRight,
@@ -62,18 +82,14 @@ class _todolistState extends State<todolist> {
                     ),
                   )
               ), //to do list text
+              for(int i=0 ; i<notDoneList.length ; i++)
+                Positioned(
+                    top: i*80+75,
+                    right: 18 ,
+                    child: ToDoList(title: notDoneList[i].title, b: true , firstStr: notDoneList[i].firstString, id: widget.id,)
+                ),
               Positioned(
-                  top: 75,
-                  right: 16,
-                  child: Column(
-                    children: [
-                      ToDoList(pharse: 'Ap project' , b: true,),
-                      SizedBox(height: 20,),
-                      ToDoList(pharse: 'Sleep enough' , b: true,)
-                    ],
-                  )), //to do list boxes
-              Positioned(
-                  top: (countOfToDoListBox+11)*80,
+                  top: notDoneList.length*80+80,
                   right: 20,
                   child: Text(
                     'کارهای انجام شده',
@@ -84,16 +100,12 @@ class _todolistState extends State<todolist> {
                     ),
                   )
               ), //done works text
-              Positioned(
-                  top: (countOfToDoListBox+11)*80+60,
-                  right: 16,
-                  child: Column(
-                    children: [
-                      ToDoList(pharse: 'Ap project' , b: false,),
-                      SizedBox(height: 20,),
-                      ToDoList(pharse: 'Sleep enough' , b: false,)
-                    ],
-                  )), //done works boxes
+              for(int i=0 ; i<doneList.length ; i++)
+                Positioned(
+                    top: i*80+140+notDoneList.length*80,
+                    right: 18 ,
+                    child: ToDoList(title: doneList[i].title, b: false , firstStr: doneList[i].firstString, id: widget.id)
+                ), //to do list boxes
             ],
           ),
         ),
@@ -164,7 +176,7 @@ class _todolistState extends State<todolist> {
                   onPressed: () => setState(
                         () {
                       Navigator.pushReplacement(context, MaterialPageRoute(
-                        builder: (context) => todolist(widget.id),
+                        builder: (context) => home(widget.id),
                       ));
                     },
                   ),
@@ -181,7 +193,7 @@ class _todolistState extends State<todolist> {
               onPressed: () => setState(
                     () {
                   Navigator.pushReplacement(context, MaterialPageRoute(
-                    builder: (context) => home(),
+                    builder: (context) => home(widget.id),
                   ));
                 },
               ),
@@ -239,7 +251,13 @@ class _todolistState extends State<todolist> {
                 actions: [
                   InkWell(
                       onTap: () async {
-                        Navigator.of(context).pop();
+                        setState(() {
+                          addToDoList();
+                          Navigator.of(context).pop();
+                          Navigator.pushReplacement(context, MaterialPageRoute(
+                            builder: (context) => page(widget.id),
+                          ));
+                        });
                       },
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -293,5 +311,80 @@ class _todolistState extends State<todolist> {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
 
     );
+  }
+
+  Future<String> showToDoList() async {
+    final socket = await Socket.connect("192.168.141.145", 8000);
+    socket.write('showToDoList\u0000');
+    socket.flush();
+
+    final responseBuffer = StringBuffer();
+    socket.listen((socketResponse) {
+      responseBuffer.write(String.fromCharCodes(socketResponse));
+    }, onDone: () {
+      socket.close();
+    });
+
+    await socket.done;
+    setState(() {
+      response = responseBuffer.toString();
+    });
+    return response;
+  }
+
+  Future<String> addToDoList() async {
+    final socket = await Socket.connect("192.168.141.145", 8000);
+    socket.write('addToDoList\u0000');
+    if(titleController.text.trim().isNotEmpty && minuteController.text.trim().isNotEmpty && hourController.text.trim().isNotEmpty)
+      socket.write('${titleController.text}-${hourController.text}-${minuteController.text}-${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}-false\u0000');
+    titleController.clear();
+    hourController.clear();
+    minuteController.clear();
+    socket.flush();
+    return response;
+  }
+
+  void setlists(List<String> list , DateTime dateTime){
+    todolist.clear();
+    doneList.clear();
+    notDoneList.clear();
+    for(String s in list){
+      List<String> parts = s.split("-");
+      todolist.add(ToDoListHandlaer(
+          firstString: s,
+          title: parts[0],
+          dataTime: DateTime(int.parse(parts[3]) , int.parse(parts[4]) , int.parse(parts[5]) , int.parse(parts[1]) , int.parse(parts[2])),
+          hour: parts[1],
+          minute: parts[2],
+          isDone: parts[6]
+      )
+      );
+      if(!(todolist.last.dataTime.year == dateTime.year && todolist.last.dataTime.month == dateTime.month && todolist.last.dataTime.day == dateTime.day))
+        todolist.remove(todolist.last);
+    }
+    todolist.sort((ToDoListHandlaer a, ToDoListHandlaer b) {
+// اگر هر دو تاریخ در گذشته یا آینده هستند، بر اساس زمان مرتب میشوند
+      if ((a.dateTime().isBefore(dateTime) && b.dateTime().isBefore(dateTime)) ||
+          (a.dateTime().isAfter(dateTime) && b.dateTime().isAfter(dateTime))) {
+        return a.dateTime().compareTo(b.dateTime());
+      } else if (a.dateTime().isBefore(dateTime)) {
+// 'a' گذشته است و 'b' آینده است، 'a' اول قرار میگیرد
+        return -1;
+      } else {
+// 'a' آینده است و 'b' گذشته است، 'b' اول قرار میگیرد
+        return 1;
+      }
+    });
+    for(ToDoListHandlaer p in todolist) {
+      print(p.title);
+      if(p.isDone == 'false')
+        notDoneList.add(p);
+      else if(p.isDone == 'true')
+        doneList.add(p);
+    }
+    for(ToDoListHandlaer p in doneList)
+      print("done = ${p.title}");
+    for(ToDoListHandlaer p in notDoneList)
+      print("not done = ${p.title}");
   }
 }

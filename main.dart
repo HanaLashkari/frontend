@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:test/home.dart';
-import 'package:test/log_in.dart';
-import 'package:test/sign_up.dart';
-import 'package:test/user_information.dart';
-import 'package:test/Helpful.dart';
+import 'package:project/home.dart';
+import 'package:project/log_in.dart';
+import 'package:project/sign_up.dart';
+import 'package:project/user_information.dart';
+import 'package:project/Helpful.dart';
 
 void main() {
   runApp(MaterialApp(
-    home: home(),
+    home: home(402243094),
 
   ));
 }

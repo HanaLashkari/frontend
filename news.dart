@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:test/Helpful.dart';
-import 'package:test/classes.dart';
-import 'package:test/projects.dart';
-import 'package:test/todolist.dart';
+import 'package:project/Helpful.dart';
+import 'package:project/classes.dart';
+import 'package:project/projects.dart';
+import 'package:project/todolist.dart';
 import 'home.dart';
 
 class news extends StatefulWidget{
@@ -118,7 +118,7 @@ class _news extends State<news> {
                   onPressed: () => setState(
                         () {
                       Navigator.pushReplacement(context, MaterialPageRoute(
-                        builder: (context) => todolist(widget.id),
+                        builder: (context) => home(widget.id),
                       ));
                     },
                   ),
@@ -165,7 +165,7 @@ class _news extends State<news> {
               onPressed: () => setState(
                     () {
                   Navigator.pushReplacement(context, MaterialPageRoute(
-                    builder: (context) => home(),
+                    builder: (context) => home(widget.id),
                   ));
                 },
               ),
