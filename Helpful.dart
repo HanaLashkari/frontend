@@ -283,6 +283,10 @@ class _ToDoListState extends State<ToDoList> {
                         ),
                         onPressed: () => setState(
                               () {
+                                finishTask(widget.firstStr);
+                                Navigator.pushReplacement(context, MaterialPageRoute(
+                                  builder: (context) => page(widget.id),
+                                ));
                           },
                         ),
                       ),
@@ -313,6 +317,13 @@ class _ToDoListState extends State<ToDoList> {
   Future<void> doTask(String s) async {
     final socket = await Socket.connect("192.168.141.145", 8000);
     socket.write('doTask\u0000');
+    socket.write('${s}\u0000');
+    socket.flush();
+  }
+
+  Future<void> finishTask(String s) async {
+    final socket = await Socket.connect("192.168.141.145", 8000);
+    socket.write('finishTask\u0000');
     socket.write('${s}\u0000');
     socket.flush();
   }
@@ -351,11 +362,14 @@ class page extends StatefulWidget{
 
 class _pageState extends State<page> {
   @override
-  void initState()  {
+  void initState() {
     super.initState();
-    Navigator.pushReplacement(context, MaterialPageRoute(
-      builder: (context) => todolist(widget.id),
-    ));
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Future.delayed(Duration(milliseconds: 50));
+      Navigator.pushReplacement(context, MaterialPageRoute(
+        builder: (context) => todolist(widget.id),
+      ));
+    });
   }
 
   @override
