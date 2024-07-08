@@ -25,6 +25,7 @@ class _projectsState extends State<projects> {
   List<ProjectHandler> projects = [];
   List<ProjectHandler> past = [];
   List<ProjectHandler> future = [];
+  List<String> listStrings = [];
 
   @override
   void initState()  {
@@ -32,44 +33,8 @@ class _projectsState extends State<projects> {
     showAssignment().then((response) {
       setState(() {
         print('------3-090-103-03--0----here ====== reponse = $response ');
-        List<String> list = response.split("=");
-        for(String s in list){
-          List<String> parts = s.split("-");
-          List<String> timeList = parts[1].split(",");
-          projects.add(ProjectHandler(
-              title: parts[0],
-              dataTime: DateTime(int.parse(timeList[0].split("/")[0]) , int.parse(timeList[0].split("/")[1]) , int.parse(timeList[0].split("/")[2]) ,
-                  int.parse(timeList[1].split(":")[0]) , int.parse(timeList[1].split(":")[1])),
-              hour: timeList[1],
-              deadline: timeList[0],
-              grade: parts[2],
-              description: parts[3],
-              estimatedTime: timeList[2]));
-        }
-        projects.sort((ProjectHandler a, ProjectHandler b) {
-// اگر هر دو تاریخ در گذشته یا آینده هستند، بر اساس زمان مرتب میشوند
-          if ((a.dateTime().isBefore(DateTime.now()) && b.dateTime().isBefore(DateTime.now())) ||
-              (a.dateTime().isAfter(DateTime.now()) && b.dateTime().isAfter(DateTime.now()))) {
-            return a.dateTime().compareTo(b.dateTime());
-          } else if (a.dateTime().isBefore(DateTime.now())) {
-// 'a' گذشته است و 'b' آینده است، 'a' اول قرار میگیرد
-            return -1;
-          } else {
-// 'a' آینده است و 'b' گذشته است، 'b' اول قرار میگیرد
-            return 1;
-          }
-        });
-        for(ProjectHandler p in projects) {
-          print(p.title);
-          if(p.dateTime().isBefore(DateTime.now()))
-            past.add(p);
-          else if(p.dateTime().isAfter(DateTime.now()) || p.dataTime == DateTime.now())
-            future.add(p);
-        }
-        for(ProjectHandler p in future)
-          print("future = ${p.title}");
-        for(ProjectHandler p in past)
-          print("past = ${p.title}");
+         listStrings = response.split("=");
+         setlists(listStrings, DateTime.now());
       });
     }).catchError((error) {
 
@@ -108,7 +73,26 @@ class _projectsState extends State<projects> {
               Positioned(
                 top: 25,
                   left: 20,
-                  child: LittleFieldBox(labelText: 'تاریخ', controller: dateContoroller, hintText:  'مثال : 2024/02/03' , width: 180,)),
+                  child: Row(
+                    children: [
+                      LittleFieldBox(labelText: 'تاریخ', controller: dateContoroller, hintText:  'مثال : 2024/02/03' , width: 180,),
+                      IconButton(
+                              onPressed: () => setState(
+                                () {
+                              String s = dateContoroller.text;
+                              List<String> times = s.split('/');
+                              print('herrrrrreeeeeeeeeee ${times.length}');
+                              if(times.length != 3)
+                                return;
+                              setlists(listStrings, DateTime(int.parse(times[0]) ,int.parse(times[1]) , int.parse(times[2])));
+                              print(past);
+                              print("kokokoko");
+                              print(future);
+                            },
+                          ),
+                          icon: Icon(Icons.data_saver_on , color: Color(0xff003b11), size: 40,))
+                    ],
+                  )),
               Positioned(
                   top: 40,
                   right: 25,
@@ -124,20 +108,15 @@ class _projectsState extends State<projects> {
               for(int i=0 ; i<future.length ; i++)
                 Positioned(
                     top: i*80+110,
-                    right: 16 ,
-                    child: ProjectBox(b: true, title: future[i].title, deadline: future[i].deadline, time: future[i].hour, explainServer: future[i].description, explainClient: "توضیحات تحویل", grade: future[i].grade , esatimatedTime: future[i].estimatedTime,)
+                    right: 18 ,
+                    child: ProjectBox(b: true, title: future[i].title, deadline: future[i].deadline, time: future[i].hour, explainServer: future[i].description.split(',')[0], explainClient: future[i].description.split(',').length <= 1? "توضیحات تحویل" : future[i].description.split(',')[1], grade: future[i].grade , esatimatedTime: future[i].estimatedTime,)
                 ),
               for(int i=0 ; i<past.length ; i++)
                 Positioned(
-                    top: i*80+110,
-                    right: 16 ,
-                    child: ProjectBox(b: false, title: past[i].title, deadline: past[i].deadline, time: past[i].hour, explainServer: past[i].description, explainClient: "توضیحات تحویل", grade: past[i].grade , esatimatedTime:  past[i].estimatedTime,)
+                    top: i*80+110+future.length*80,
+                    right: 18 ,
+                    child: ProjectBox(b: false, title: past[i].title, deadline: past[i].deadline, time: past[i].hour, explainServer: past[i].description.split(',')[0], explainClient: past[i].description.split(',').length <= 1? "توضیحات تحویل" : past[i].description.split(',')[1], grade: past[i].grade , esatimatedTime:  past[i].estimatedTime,)
                 ),
-              Positioned(
-                top: 500,
-                  right: 16,
-                  child: ProjectBox(b: true, title: 'AP project', deadline: '1403/04/17', grade: '10' , time: '72',explainClient: 'helppppppp',explainServer: 'dart and flutter',  esatimatedTime: '5',)
-              ),
             ],
           ),
         ),
@@ -256,6 +235,52 @@ class _projectsState extends State<projects> {
     });
     return response;
   }
+
+  void setlists(List<String> list , DateTime dateTime){
+    projects.clear();
+    past.clear();
+    future.clear();
+    for(String s in list){
+      List<String> parts = s.split("-");
+      List<String> timeList = parts[1].split(",");
+      projects.add(ProjectHandler(
+        firstString: s,
+          title: parts[0],
+          dataTime: DateTime(int.parse(timeList[0].split("/")[0]) , int.parse(timeList[0].split("/")[1]) , int.parse(timeList[0].split("/")[2]) ,
+              int.parse(timeList[1].split(":")[0]) , int.parse(timeList[1].split(":")[1])),
+          hour: timeList[1],
+          deadline: timeList[0],
+          grade: parts[2],
+          description: parts[3],
+          estimatedTime: timeList[2]));
+      if(!(projects.last.dataTime.year == dateTime.year && projects.last.dataTime.month == dateTime.month && projects.last.dataTime.day == dateTime.day))
+        projects.remove(projects.last);
+    }
+    projects.sort((ProjectHandler a, ProjectHandler b) {
+// اگر هر دو تاریخ در گذشته یا آینده هستند، بر اساس زمان مرتب میشوند
+      if ((a.dateTime().isBefore(dateTime) && b.dateTime().isBefore(dateTime)) ||
+          (a.dateTime().isAfter(dateTime) && b.dateTime().isAfter(dateTime))) {
+        return a.dateTime().compareTo(b.dateTime());
+      } else if (a.dateTime().isBefore(dateTime)) {
+// 'a' گذشته است و 'b' آینده است، 'a' اول قرار میگیرد
+        return -1;
+      } else {
+// 'a' آینده است و 'b' گذشته است، 'b' اول قرار میگیرد
+        return 1;
+      }
+    });
+    for(ProjectHandler p in projects) {
+      print(p.title);
+      if(p.dateTime().isBefore(dateTime))
+        past.add(p);
+      else if(p.dateTime().isAfter(dateTime) || p.dataTime == dateTime)
+        future.add(p);
+    }
+    for(ProjectHandler p in future)
+      print("future = ${p.title}");
+    for(ProjectHandler p in past)
+      print("past = ${p.title}");
+  }
 }
 
 class ProjectBox extends StatefulWidget{
@@ -285,6 +310,7 @@ class _ProjectBoxState extends State<ProjectBox> {
   final serverController = TextEditingController();
   final clientController = TextEditingController();
   final timeController = TextEditingController();
+  String response = '';
 
   @override
   Widget build(BuildContext context) {
@@ -337,7 +363,7 @@ class _ProjectBoxState extends State<ProjectBox> {
                             child: Row(
                               children: [
                                 PharseText(pharse: 'زمان تخمینی : ', color: _projectsState.textColor, size: 18),
-                                widget.b ? LittleFieldBox(labelText: widget.esatimatedTime, controller: timeController, hintText: widget.time, width: 70) : PharseText(pharse: widget.esatimatedTime, color: _projectsState.textColor, size: 18),
+                                widget.b ? LittleFieldBox(labelText: widget.esatimatedTime, controller: timeController, hintText: widget.esatimatedTime, width: 70) : PharseText(pharse: widget.esatimatedTime, color: _projectsState.textColor, size: 18),
                               ],
                             )
                         ),
@@ -407,6 +433,8 @@ class _ProjectBoxState extends State<ProjectBox> {
                 actions: [
                   InkWell(
                       onTap: () async {
+                        if(timeController.text != widget.esatimatedTime && serverController.text != widget.explainServer && clientController.text != widget.explainClient)
+                          changeDescription(widget.title, timeController, serverController, clientController);
                         Navigator.of(context).pop();
                       },
                       child: Row(
@@ -457,12 +485,35 @@ class _ProjectBoxState extends State<ProjectBox> {
           ),
           child: Stack(
             children: [
-              Positioned(left: 10, top: 17 ,child: PharseText(pharse: widget.deadline, color: _projectsState.backgroundColor, size: 15)),
+              Positioned(left: 20, top: 17 ,child: PharseText(pharse: widget.time, color: _projectsState.backgroundColor, size: 15)),
               Positioned(right: 45 , top: 12,child: widget.b? PharseText(pharse: widget.title, color: _projectsState.backgroundColor, size: 20) : Text(widget.title , style: TextStyle(color: _projectsState.backgroundColor , fontSize: 20 , fontWeight: FontWeight.w300, decoration: TextDecoration.lineThrough , decorationColor: _projectsState.backgroundColor ))),
               Positioned(right: 10 , top: 13 ,child: Icon(widget.b ? Icons.circle_outlined : Icons.task_alt_outlined, size: 32, color: _projectsState.backgroundColor,)),
             ],
           ),
         )
     );
+  }
+
+  Future<String> changeDescription(String title , TextEditingController estimated , TextEditingController server , TextEditingController client) async {
+    final socket = await Socket.connect("192.168.141.145", 8000);
+    socket.write('changeDescription\u0000');
+    socket.write('$title\u0000');
+    socket.write('${estimated.text}-${server.text}-${client.text}\u0000');
+    socket.flush();
+    timeController.clear();
+    serverController.clear();
+    clientController.clear();
+    final responseBuffer = StringBuffer();
+    socket.listen((socketResponse) {
+      responseBuffer.write(String.fromCharCodes(socketResponse));
+    }, onDone: () {
+      socket.close();
+    });
+
+    await socket.done;  // Wait for the socket to be closed
+    setState(() {
+      response = responseBuffer.toString();
+    });
+    return response;
   }
 }

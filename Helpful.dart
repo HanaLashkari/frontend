@@ -304,6 +304,7 @@ class _ToDoListState extends State<ToDoList> {
 }
 
 class ProjectHandler{
+  String firstString;
   String title;
   DateTime dataTime;
   String estimatedTime;
@@ -311,7 +312,7 @@ class ProjectHandler{
   String grade;
   String hour;
   String deadline;
-  ProjectHandler({required this.title ,required this.dataTime , required this.grade , required this.description , required this.estimatedTime , required this.hour , required this.deadline});
+  ProjectHandler({required this.firstString , required this.title ,required this.dataTime , required this.grade , required this.description , required this.estimatedTime , required this.hour , required this.deadline});
   DateTime dateTime(){return this.dataTime;}
 }
 
