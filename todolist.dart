@@ -315,7 +315,7 @@ class _todolistState extends State<todolist> {
 
   Future<String> showToDoList() async {
     final socket = await Socket.connect("192.168.141.145", 8000);
-    socket.write('showToDoList\u0000');
+    socket.write('${widget.id}-showToDoList\u0000');
     socket.flush();
 
     final responseBuffer = StringBuffer();
@@ -334,7 +334,7 @@ class _todolistState extends State<todolist> {
 
   Future<String> addToDoList() async {
     final socket = await Socket.connect("192.168.141.145", 8000);
-    socket.write('addToDoList\u0000');
+    socket.write('${widget.id}-addToDoList\u0000');
     if(titleController.text.trim().isNotEmpty && minuteController.text.trim().isNotEmpty && hourController.text.trim().isNotEmpty)
       socket.write('${titleController.text}-${hourController.text}-${minuteController.text}-${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}-false\u0000');
     titleController.clear();

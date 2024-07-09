@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -302,7 +301,7 @@ class _classesState extends State<classes> {
 
   Future<String> addClass() async {
     final socket = await Socket.connect("192.168.141.145", 8000);
-    socket.write('addClass\u0000');
+    socket.write('${widget.id}-addClass\u0000');
     socket.write('${codeController.text}\u0000');
     socket.flush();
 
@@ -322,7 +321,7 @@ class _classesState extends State<classes> {
 
   Future<String> showClasses() async {
     final socket = await Socket.connect("192.168.141.145", 8000);
-    socket.write('showClasses\u0000');
+    socket.write('${widget.id}-showClasses\u0000');
     socket.flush();
 
     final responseBuffer = StringBuffer();

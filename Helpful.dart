@@ -318,14 +318,14 @@ class _ToDoListState extends State<ToDoList> {
   }
   Future<void> doTask(String s) async {
     final socket = await Socket.connect("192.168.141.145", 8000);
-    socket.write('doTask\u0000');
+    socket.write('${widget.id}-doTask\u0000');
     socket.write('${s}\u0000');
     socket.flush();
   }
 
   Future<void> finishTask(String s) async {
     final socket = await Socket.connect("192.168.141.145", 8000);
-    socket.write('finishTask\u0000');
+    socket.write('${widget.id}-finishTask\u0000');
     socket.write('${s}\u0000');
     socket.flush();
   }

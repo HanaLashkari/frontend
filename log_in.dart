@@ -165,11 +165,11 @@ class _login_pageState extends State<login_page> {
                   onTap: () async {
                     logIn();
                     print('************here     :    $response');
-                    if (response == '11') {
+                    if (response.contains('11')) {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => home(int.parse(idController.text)),
+                          builder: (context) => home(int.parse(response.split("-")[1])),
                         ),
                       );
                     }

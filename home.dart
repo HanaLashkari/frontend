@@ -271,7 +271,7 @@ class _homeState extends State<home> {
   }
   Future<String> showHomePage() async {
     final socket = await Socket.connect("192.168.141.145", 8000);
-    socket.write('showHomePage\u0000');
+    socket.write('${widget.id}-showHomePage\u0000');
     socket.flush();
     final responseBuffer = StringBuffer();
     socket.listen((socketResponse) {

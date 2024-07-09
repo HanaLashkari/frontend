@@ -109,13 +109,13 @@ class _projectsState extends State<projects> {
                 Positioned(
                     top: i*80+110,
                     right: 18 ,
-                    child: ProjectBox(b: true, title: future[i].title, deadline: future[i].deadline, time: future[i].hour, explainServer: future[i].description.split(',')[0], explainClient: !future[i].description.contains(',')? "توضیحات تحویل" : future[i].description.split(',')[1], grade: future[i].grade , esatimatedTime: future[i].estimatedTime,)
+                    child: ProjectBox(widget.id,b: true, title: future[i].title, deadline: future[i].deadline, time: future[i].hour, explainServer: future[i].description.split(',')[0], explainClient: !future[i].description.contains(',')? "توضیحات تحویل" : future[i].description.split(',')[1], grade: future[i].grade , esatimatedTime: future[i].estimatedTime,)
                 ),
               for(int i=0 ; i<past.length ; i++)
                 Positioned(
                     top: i*80+110+future.length*80,
                     right: 18 ,
-                    child: ProjectBox(b: false, title: past[i].title, deadline: past[i].deadline, time: past[i].hour, explainServer: past[i].description.split(',')[0], explainClient: !past[i].description.contains(',')? "توضیحات تحویل" : past[i].description.split(',')[1], grade: past[i].grade , esatimatedTime:  past[i].estimatedTime,)
+                    child: ProjectBox(widget.id,b: false, title: past[i].title, deadline: past[i].deadline, time: past[i].hour, explainServer: past[i].description.split(',')[0], explainClient: !past[i].description.contains(',')? "توضیحات تحویل" : past[i].description.split(',')[1], grade: past[i].grade , esatimatedTime:  past[i].estimatedTime,)
                 ),
             ],
           ),
@@ -218,7 +218,7 @@ class _projectsState extends State<projects> {
 
   Future<String> showAssignment() async {
     final socket = await Socket.connect("192.168.141.145", 8000);
-    socket.write('showAssignment\u0000');
+    socket.write('${widget.id}-showAssignment\u0000');
     socket.flush();
 
     final responseBuffer = StringBuffer();
@@ -283,6 +283,7 @@ class _projectsState extends State<projects> {
 }
 
 class ProjectBox extends StatefulWidget{
+  int id;
   bool b;
   String title;
   String deadline;
@@ -292,6 +293,7 @@ class ProjectBox extends StatefulWidget{
   String grade;
   String esatimatedTime;
   ProjectBox(
+      this.id,
       {required this.b,
         required this.title,
         required this.deadline,
@@ -495,7 +497,7 @@ class _ProjectBoxState extends State<ProjectBox> {
 
   Future<String> changeDescription(String title , TextEditingController estimated , TextEditingController server , TextEditingController client) async {
     final socket = await Socket.connect("192.168.141.145", 8000);
-    socket.write('changeDescription\u0000');
+    socket.write('${widget.id}-changeDescription\u0000');
     socket.write('$title\u0000');
     socket.write('${estimated.text.trim().isNotEmpty ? estimated.text : widget.esatimatedTime}-${server.text.trim().isNotEmpty ? server.text : widget.explainServer}-${client.text.trim().isNotEmpty ? client.text : widget.explainClient}\u0000');
     socket.flush();
