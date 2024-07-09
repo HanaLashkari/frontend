@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:project/Helpful.dart';
 import 'package:project/classes.dart';
 import 'package:project/news.dart';
+import 'package:project/profile.dart';
 import 'package:project/projects.dart';
 import 'package:project/todolist.dart';
 import 'package:project/user_information.dart';
@@ -21,10 +22,10 @@ class _homeState extends State<home> {
   static const textColor = Color(0xFF024335);
   static const backgroundColor = Color(0xFFE6F6EF);
   String response = '';
-  String exam = '';
-  String best = '';
-  String worst = '';
-  String assignment = '';
+  String exam = '0';
+  String best = '0';
+  String worst = '0';
+  String assignment = '0';
   List<ProjectHandler> doneList = [];
   List<ToDoListHandlaer> notDoneList = [];
   List<String> listStrings = [];
@@ -85,7 +86,7 @@ class _homeState extends State<home> {
                       onPressed: () => setState(
                             () {
                           Navigator.pushReplacement(context, MaterialPageRoute(
-                            builder: (context) => user_profile(id: 402243094, info: 'here'),
+                            builder: (context) => profile(widget.id),
                           ));
                         },
                       ),
@@ -160,14 +161,14 @@ class _homeState extends State<home> {
               for(int i=0 ; i<doneList.length ; i++)
                 if(i%2 == 0)
                 Positioned(
-                    top: i*100+440+notDoneList.length*80,
+                    top: i*60+440+notDoneList.length*80,
                     right: 30 ,
                     child: DoneWork(doneList[i].title), //column even for done work
                 ),
               for(int i=0 ; i<doneList.length ; i++)
                 if(i%2 == 1)
                   Positioned(
-                      top: (i-1)*50+440+notDoneList.length*80,
+                      top: (i-1)*60+440+notDoneList.length*80,
                       left: 30 ,
                       child: DoneWork(doneList[i].title),
                   ), //column odd for done work
@@ -346,7 +347,7 @@ class _homeState extends State<home> {
           grade: parts[2],
           description: parts[3],
           estimatedTime: timeList[2]));
-      if(!doneList.last.dateTime().isBefore(dateTime))
+      if(!doneList.last.dateTime().isAfter(dateTime))
         doneList.remove(doneList.last);
     }
     for(ProjectHandler p in doneList)

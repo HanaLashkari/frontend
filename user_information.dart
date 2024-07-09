@@ -7,15 +7,13 @@ import 'package:project/home.dart';
 import 'Helpful.dart';
 
 class user_profile extends StatefulWidget{
-  String info;
-  user_profile({ required this.info , required this.id});
+  user_profile(this.id);
   int id;
   @override
-  State<user_profile> createState() => _user_profileState(info: info);
+  State<user_profile> createState() => _user_profileState();
 }
 
 class _user_profileState extends State<user_profile> {
-  _user_profileState({required this.info});
   static const buttonColor = Color(0xffbb0000);
   static const textColor = Color(0xFF024335);
   static const backgroundColor = Color(0xFFE6F6EF);
@@ -26,7 +24,6 @@ class _user_profileState extends State<user_profile> {
   final gradeController = TextEditingController();
   final unitsController = TextEditingController();
   bool _isVisible = true;
-  String info;
   var response = '';
   @override
   Widget build(BuildContext context) {

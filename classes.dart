@@ -118,7 +118,7 @@ class _classesState extends State<classes> {
                                       erorNotFound();
                                     }else if(response == 'found'){
                                       Navigator.pushReplacement(context, MaterialPageRoute(
-                                          builder: (context) => projects(widget.id)));
+                                          builder: (context) => PageForClass(widget.id)));
                                     }
                                     response = '';
                                     //codeController.clear();

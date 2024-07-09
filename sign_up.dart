@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:project/Helpful.dart';
 import 'package:flutter/material.dart';
 import 'package:project/log_in.dart';
+import 'package:project/profile.dart';
 import 'package:project/user_information.dart';
 
 class signup_page extends StatefulWidget{
@@ -150,11 +151,11 @@ class _signup_page extends State<signup_page> {
                       onTap: () async {
                         signUp();
                         print('************here     :    $response');
-                        if (response == '5') {
+                        if (response.contains('5')) {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => user_profile( id: int.parse(idController.text) , info: '${usernameController.text}-${idController.text}-${passwordController.text}'),
+                              builder: (context) => profile(int.parse(response.split('-')[1]) ),
                             ),
                           );
                         }

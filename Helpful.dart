@@ -1,6 +1,7 @@
 import 'dart:ffi';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:project/classes.dart';
 import 'package:project/home.dart';
 import 'package:project/todolist.dart';
 
@@ -371,6 +372,32 @@ class _PageForToDoListState extends State<PageForToDoList> {
       await Future.delayed(Duration(milliseconds: 50));
       Navigator.pushReplacement(context, MaterialPageRoute(
         builder: (context) => widget.b ? todolist(widget.id) : home(widget.id),
+      ));
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold();
+  }
+}
+
+
+class PageForClass extends StatefulWidget{
+  int id;
+  PageForClass(this.id);
+  @override
+  State<PageForToDoList> createState() => _PageForClassState();
+}
+
+class _PageForClassState extends State<PageForToDoList> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Future.delayed(Duration(milliseconds: 50));
+      Navigator.pushReplacement(context, MaterialPageRoute(
+        builder: (context) => classes(widget.id),
       ));
     });
   }
