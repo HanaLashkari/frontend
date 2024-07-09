@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:project/Helpful.dart';
 import 'package:flutter/material.dart';
+import 'package:project/home.dart';
 import 'package:project/sign_up.dart';
 
 class login_page extends StatefulWidget{
@@ -168,7 +169,7 @@ class _login_pageState extends State<login_page> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => signup_page(),
+                          builder: (context) => home(int.parse(idController.text)),
                         ),
                       );
                     }

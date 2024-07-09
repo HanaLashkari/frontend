@@ -20,12 +20,13 @@ class _homeState extends State<home> {
   static const buttonColor = Color(0xffbb0000);
   static const textColor = Color(0xFF024335);
   static const backgroundColor = Color(0xFFE6F6EF);
-  int countOfToDoBox = 3;
-  int countOfDoneWorkBox = 2;
   String response = '';
-  List<ToDoListHandlaer> doneList = [];
+  String exam = '';
+  String best = '';
+  String worst = '';
+  String assignment = '';
+  List<ProjectHandler> doneList = [];
   List<ToDoListHandlaer> notDoneList = [];
-  List<ToDoListHandlaer> listOfworks = [];
   List<String> listStrings = [];
 
   @override
@@ -34,20 +35,20 @@ class _homeState extends State<home> {
     showHomePage().then((response) {
       setState(() {
         print('------3-090-103-03--0----here ====== reponse = $response ');
-        listStrings = response.split("=");
+        listStrings = response.split("#");
         setlists(listStrings, DateTime.now());
       });
     }).catchError((error) {
-
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    double heightOfScreen = MediaQuery.of(context).size.height;
+    double heightOfScreen = MediaQuery.of(context).size.height  ;
     double widthOfScreen = MediaQuery.of(context).size.width;
     print('width :   $widthOfScreen');
     print('height :   $heightOfScreen');
+
     return Scaffold(
       appBar: AppBar(
         title: Text('صفحه سرا'),
@@ -55,7 +56,7 @@ class _homeState extends State<home> {
       body: SingleChildScrollView(
         child: Container(
           width: widthOfScreen,
-          height: heightOfScreen+countOfDoneWorkBox*50,
+          height: heightOfScreen+(doneList.length>4 ? (doneList.length-4)/2 : 0)*50+ (notDoneList.length>5 ? (notDoneList.length-5)*80 : 0 ),
           decoration: BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.topRight,
@@ -108,9 +109,9 @@ class _homeState extends State<home> {
                   right: 25,
                   child: Row(
                     children: [
-                      Summary(Icons.border_color_outlined , 'تعداد تکالیف -> 2'),
+                      Summary(Icons.border_color_outlined , 'تعداد تکالیف -> $assignment'),
                       SizedBox(width: 30,),
-                      Summary(Icons.library_books_outlined , 'تعداد امتحان -> 5'),
+                      Summary(Icons.library_books_outlined , 'تعداد امتحان -> $exam'),
         
                     ],
                   )
@@ -120,9 +121,9 @@ class _homeState extends State<home> {
                   right: 25,
                   child: Row(
                     children: [
-                      Summary(Icons.heart_broken_outlined , 'بدترین نمره -> 15'),
+                      Summary(Icons.heart_broken_outlined , 'بدترین نمره -> $worst'),
                       SizedBox(width: 30,),
-                      Summary(Icons.emoji_events_outlined , 'بهترین نمره -> 100'),
+                      Summary(Icons.emoji_events_outlined , 'بهترین نمره -> $best'),
                     ],
                   )
               ), //row two for summary
@@ -138,23 +139,17 @@ class _homeState extends State<home> {
                     ),
                   )
               ), //to do list text
+              for(int i=0 ; i<notDoneList.length ; i++)
+                Positioned(
+                    top: i*80+370,
+                    right: 18 ,
+                    child: ToDoList(title: notDoneList[i].title, b: true , firstStr: notDoneList[i].firstString, id: widget.id , clazz: true,)
+                ),//column for to do list
               Positioned(
-                top: 370,
-                  right: 16,
-                  child: Column(
-                    children: [
-                      ToDoList(title: 'پروژه برنامه نویسی پیشرفته' , b: true, firstStr: '',id: widget.id , clazz:  false),
-                      SizedBox(height: 15,),
-                      ToDoList(title: 'تکلیف الکترونیک' , b: true, firstStr: '',id: widget.id , clazz: false,),
-                      SizedBox(height: 15,),
-                      ToDoList(title: 'تکلیف سری ها' , b: true, firstStr: '',id: widget.id , clazz: false,),
-                    ],
-                  )), //column for to do list
-              Positioned(
-                  top: 380+countOfToDoBox*75,
+                  top: 380+notDoneList.length*80,
                   right: 15,
                   child: Text(
-                    'فعالیت های انجام شده',
+                    'تمرین های انجام شده',
                     style: TextStyle(
                       color: textColor,
                       fontWeight: FontWeight.w800,
@@ -162,16 +157,20 @@ class _homeState extends State<home> {
                     ),
                   )
               ), //done work text
-              Positioned(
-                top: 440+countOfToDoBox*75,
-                  right: 20,
-                  child: Column(
-                    children: [
-                      DoneWork('مطالعه برای امتحان ترم ریاضی2'),
-                      SizedBox(height: 15,),
-                      DoneWork('ap project')
-                    ],
-                  )), //column for done work
+              for(int i=0 ; i<doneList.length ; i++)
+                if(i%2 == 0)
+                Positioned(
+                    top: i*100+440+notDoneList.length*80,
+                    right: 30 ,
+                    child: DoneWork(doneList[i].title), //column even for done work
+                ),
+              for(int i=0 ; i<doneList.length ; i++)
+                if(i%2 == 1)
+                  Positioned(
+                      top: (i-1)*50+440+notDoneList.length*80,
+                      left: 30 ,
+                      child: DoneWork(doneList[i].title),
+                  ), //column odd for done work
             ],
           ),
         ),
@@ -285,14 +284,21 @@ class _homeState extends State<home> {
     setState(() {
       response = responseBuffer.toString();
     });
+    print('lizhdbhujsreedkabhereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee ============== $response');
     return response;
   }
 
   void setlists(List<String> list , DateTime dateTime){
-    listOfworks.clear();
     doneList.clear();
     notDoneList.clear();
-    for(String s in list){
+    List<String> part = list[0].split(',');
+    assignment = part[0];
+    exam = part[1];
+    worst = part[2];
+    best = part[3];
+    print('object  ========= $assignment --- $exam --- $worst --- $best');
+    List<ToDoListHandlaer> listOfworks = [];
+    for(String s in list[1].split("=")){
       List<String> parts = s.split("-");
       listOfworks.add(ToDoListHandlaer(
           firstString: s,
@@ -323,14 +329,31 @@ class _homeState extends State<home> {
       print(p.title);
       if(p.isDone == 'false')
         notDoneList.add(p);
-      else if(p.isDone == 'true')
-        doneList.add(p);
     }
-    for(ToDoListHandlaer p in doneList)
-      print("done = ${p.title}");
     for(ToDoListHandlaer p in notDoneList)
       print("not done = ${p.title}");
-  }}
+
+    for(String s in list[2].split("=")){
+      List<String> parts = s.split("-");
+      List<String> timeList = parts[1].split(",");
+      doneList.add(ProjectHandler(
+          firstString: s,
+          title: parts[0],
+          dataTime: DateTime(int.parse(timeList[0].split("/")[0]) , int.parse(timeList[0].split("/")[1]) , int.parse(timeList[0].split("/")[2]) ,
+              int.parse(timeList[1].split(":")[0]) , int.parse(timeList[1].split(":")[1])),
+          hour: timeList[1],
+          deadline: timeList[0],
+          grade: parts[2],
+          description: parts[3],
+          estimatedTime: timeList[2]));
+      if(!doneList.last.dateTime().isBefore(dateTime))
+        doneList.remove(doneList.last);
+    }
+    for(ProjectHandler p in doneList)
+      print("project is done = ${p.title}");
+
+  }
+}
 
 class Summary extends StatelessWidget{
   Summary(this.icon, this.text);

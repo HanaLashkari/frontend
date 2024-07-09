@@ -154,7 +154,7 @@ class _signup_page extends State<signup_page> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => user_profile( id: 402243094 , info: '${usernameController.text}-${idController.text}-${passwordController.text}'),
+                              builder: (context) => user_profile( id: int.parse(idController.text) , info: '${usernameController.text}-${idController.text}-${passwordController.text}'),
                             ),
                           );
                         }
@@ -188,7 +188,7 @@ class _signup_page extends State<signup_page> {
     );
   }
   Future<String> signUp() async {
-    await Socket.connect("192.168.1.35", 8000).then((serverSocket) {
+    await Socket.connect("192.168.141.145", 8000).then((serverSocket) {
       serverSocket.write('signup\u0000');
       serverSocket.write('${usernameController.text}-${idController.text}-${passwordController.text}\u0000');
       serverSocket.flush();

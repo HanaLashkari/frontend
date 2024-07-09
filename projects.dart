@@ -109,13 +109,13 @@ class _projectsState extends State<projects> {
                 Positioned(
                     top: i*80+110,
                     right: 18 ,
-                    child: ProjectBox(b: true, title: future[i].title, deadline: future[i].deadline, time: future[i].hour, explainServer: future[i].description.split(',')[0], explainClient: future[i].description.split(',').length <= 1? "توضیحات تحویل" : future[i].description.split(',')[1], grade: future[i].grade , esatimatedTime: future[i].estimatedTime,)
+                    child: ProjectBox(b: true, title: future[i].title, deadline: future[i].deadline, time: future[i].hour, explainServer: future[i].description.split(',')[0], explainClient: !future[i].description.contains(',')? "توضیحات تحویل" : future[i].description.split(',')[1], grade: future[i].grade , esatimatedTime: future[i].estimatedTime,)
                 ),
               for(int i=0 ; i<past.length ; i++)
                 Positioned(
                     top: i*80+110+future.length*80,
                     right: 18 ,
-                    child: ProjectBox(b: false, title: past[i].title, deadline: past[i].deadline, time: past[i].hour, explainServer: past[i].description.split(',')[0], explainClient: past[i].description.split(',').length <= 1? "توضیحات تحویل" : past[i].description.split(',')[1], grade: past[i].grade , esatimatedTime:  past[i].estimatedTime,)
+                    child: ProjectBox(b: false, title: past[i].title, deadline: past[i].deadline, time: past[i].hour, explainServer: past[i].description.split(',')[0], explainClient: !past[i].description.contains(',')? "توضیحات تحویل" : past[i].description.split(',')[1], grade: past[i].grade , esatimatedTime:  past[i].estimatedTime,)
                 ),
             ],
           ),
@@ -423,7 +423,7 @@ class _ProjectBoxState extends State<ProjectBox> {
                         Positioned(
                             right: widget.b? 140 : 135,
                             top: widget.b? 275 : 295,
-                            child: widget.b?LittleFieldBox(labelText: 'خلاصه بگو', controller: clientController, hintText: 'خلاصه بگو', width: 100):PharseText(pharse: widget.explainClient, color: _projectsState.textColor, size: 18),
+                            child: widget.b?LittleFieldBox(labelText: widget.explainClient, controller: clientController, hintText: widget.explainClient, width: 100):PharseText(pharse: widget.explainClient, color: _projectsState.textColor, size: 18),
                         ),
                       ],
                     )
