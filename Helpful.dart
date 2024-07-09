@@ -1,6 +1,7 @@
 import 'dart:ffi';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:project/home.dart';
 import 'package:project/todolist.dart';
 
 class FieldBox extends StatelessWidget{
@@ -218,11 +219,12 @@ class Eror_password extends StatelessWidget{
 }
 
 class ToDoList extends StatefulWidget{
-  ToDoList({required this.title , required this.b , required this.firstStr , required this.id});
+  ToDoList({required this.title , required this.b , required this.firstStr , required this.id , required this.clazz});
   String title;
   bool b;
   String firstStr;
   int id;
+  bool clazz;
   @override
   static const buttonColor = Color(0xffbb0000);
   static const textColor = Color(0xFF024335);
@@ -285,7 +287,7 @@ class _ToDoListState extends State<ToDoList> {
                               () {
                                 finishTask(widget.firstStr);
                                 Navigator.pushReplacement(context, MaterialPageRoute(
-                                  builder: (context) => page(widget.id),
+                                  builder: (context) => PageForToDoList(widget.id , widget.clazz),
                                 ));
                           },
                         ),
@@ -302,7 +304,7 @@ class _ToDoListState extends State<ToDoList> {
                               () {
                                 doTask(widget.firstStr);
                                 Navigator.pushReplacement(context, MaterialPageRoute(
-                                  builder: (context) => page(widget.id),
+                                  builder: (context) => PageForToDoList(widget.id , widget.clazz),
                                 ));
                           },
                         ),
@@ -353,21 +355,22 @@ class ToDoListHandlaer{
   DateTime dateTime(){return this.dataTime;}
 }
 
-class page extends StatefulWidget{
+class PageForToDoList extends StatefulWidget{
   int id;
-  page(this.id);
+  bool b;
+  PageForToDoList(this.id , this.b);
   @override
-  State<page> createState() => _pageState();
+  State<PageForToDoList> createState() => _PageForToDoListState();
 }
 
-class _pageState extends State<page> {
+class _PageForToDoListState extends State<PageForToDoList> {
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Future.delayed(Duration(milliseconds: 50));
       Navigator.pushReplacement(context, MaterialPageRoute(
-        builder: (context) => todolist(widget.id),
+        builder: (context) => widget.b ? todolist(widget.id) : home(widget.id),
       ));
     });
   }

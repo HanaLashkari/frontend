@@ -9,7 +9,7 @@ import 'home.dart';
 
 class todolist extends StatefulWidget{
   int id;
-  todolist(this.id);
+  todolist(this.id, {super.key});
   @override
   State<todolist> createState() => _todolistState();
 }
@@ -86,7 +86,7 @@ class _todolistState extends State<todolist> {
                 Positioned(
                     top: i*80+75,
                     right: 18 ,
-                    child: ToDoList(title: notDoneList[i].title, b: true , firstStr: notDoneList[i].firstString, id: widget.id,)
+                    child: ToDoList(title: notDoneList[i].title, b: true , firstStr: notDoneList[i].firstString, id: widget.id , clazz: true,)
                 ),
               Positioned(
                   top: notDoneList.length*80+80,
@@ -104,7 +104,7 @@ class _todolistState extends State<todolist> {
                 Positioned(
                     top: i*80+140+notDoneList.length*80,
                     right: 18 ,
-                    child: ToDoList(title: doneList[i].title, b: false , firstStr: doneList[i].firstString, id: widget.id)
+                    child: ToDoList(title: doneList[i].title, b: false , firstStr: doneList[i].firstString, id: widget.id , clazz: true,)
                 ), //to do list boxes
             ],
           ),
@@ -255,7 +255,7 @@ class _todolistState extends State<todolist> {
                           addToDoList();
                           Navigator.of(context).pop();
                           Navigator.pushReplacement(context, MaterialPageRoute(
-                            builder: (context) => page(widget.id),
+                            builder: (context) => PageForToDoList(widget.id , true),
                           ));
                         });
                       },

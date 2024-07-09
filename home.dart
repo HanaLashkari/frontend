@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -21,6 +22,26 @@ class _homeState extends State<home> {
   static const backgroundColor = Color(0xFFE6F6EF);
   int countOfToDoBox = 3;
   int countOfDoneWorkBox = 2;
+  String response = '';
+  List<ToDoListHandlaer> doneList = [];
+  List<ToDoListHandlaer> notDoneList = [];
+  List<ToDoListHandlaer> listOfworks = [];
+  List<String> listStrings = [];
+
+  @override
+  void initState()  {
+    super.initState();
+    showHomePage().then((response) {
+      setState(() {
+        print('------3-090-103-03--0----here ====== reponse = $response ');
+        listStrings = response.split("=");
+        setlists(listStrings, DateTime.now());
+      });
+    }).catchError((error) {
+
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     double heightOfScreen = MediaQuery.of(context).size.height;
@@ -122,11 +143,11 @@ class _homeState extends State<home> {
                   right: 16,
                   child: Column(
                     children: [
-                      ToDoList(title: 'پروژه برنامه نویسی پیشرفته' , b: true, firstStr: '',id: widget.id),
+                      ToDoList(title: 'پروژه برنامه نویسی پیشرفته' , b: true, firstStr: '',id: widget.id , clazz:  false),
                       SizedBox(height: 15,),
-                      ToDoList(title: 'تکلیف الکترونیک' , b: true, firstStr: '',id: widget.id),
+                      ToDoList(title: 'تکلیف الکترونیک' , b: true, firstStr: '',id: widget.id , clazz: false,),
                       SizedBox(height: 15,),
-                      ToDoList(title: 'تکلیف سری ها' , b: true, firstStr: '',id: widget.id),
+                      ToDoList(title: 'تکلیف سری ها' , b: true, firstStr: '',id: widget.id , clazz: false,),
                     ],
                   )), //column for to do list
               Positioned(
@@ -249,7 +270,67 @@ class _homeState extends State<home> {
       ),
     );
   }
-}
+  Future<String> showHomePage() async {
+    final socket = await Socket.connect("192.168.141.145", 8000);
+    socket.write('showHomePage\u0000');
+    socket.flush();
+    final responseBuffer = StringBuffer();
+    socket.listen((socketResponse) {
+      responseBuffer.write(String.fromCharCodes(socketResponse));
+    }, onDone: () {
+      socket.close();
+    });
+
+    await socket.done;
+    setState(() {
+      response = responseBuffer.toString();
+    });
+    return response;
+  }
+
+  void setlists(List<String> list , DateTime dateTime){
+    listOfworks.clear();
+    doneList.clear();
+    notDoneList.clear();
+    for(String s in list){
+      List<String> parts = s.split("-");
+      listOfworks.add(ToDoListHandlaer(
+          firstString: s,
+          title: parts[0],
+          dataTime: DateTime(int.parse(parts[3]) , int.parse(parts[4]) , int.parse(parts[5]) , int.parse(parts[1]) , int.parse(parts[2])),
+          hour: parts[1],
+          minute: parts[2],
+          isDone: parts[6]
+      )
+      );
+      if(!(listOfworks.last.dataTime.year == dateTime.year && listOfworks.last.dataTime.month == dateTime.month && listOfworks.last.dataTime.day == dateTime.day))
+        listOfworks.remove(listOfworks.last);
+    }
+    listOfworks.sort((ToDoListHandlaer a, ToDoListHandlaer b) {
+// اگر هر دو تاریخ در گذشته یا آینده هستند، بر اساس زمان مرتب میشوند
+      if ((a.dateTime().isBefore(dateTime) && b.dateTime().isBefore(dateTime)) ||
+          (a.dateTime().isAfter(dateTime) && b.dateTime().isAfter(dateTime))) {
+        return a.dateTime().compareTo(b.dateTime());
+      } else if (a.dateTime().isBefore(dateTime)) {
+// 'a' گذشته است و 'b' آینده است، 'a' اول قرار میگیرد
+        return -1;
+      } else {
+// 'a' آینده است و 'b' گذشته است، 'b' اول قرار میگیرد
+        return 1;
+      }
+    });
+    for(ToDoListHandlaer p in listOfworks) {
+      print(p.title);
+      if(p.isDone == 'false')
+        notDoneList.add(p);
+      else if(p.isDone == 'true')
+        doneList.add(p);
+    }
+    for(ToDoListHandlaer p in doneList)
+      print("done = ${p.title}");
+    for(ToDoListHandlaer p in notDoneList)
+      print("not done = ${p.title}");
+  }}
 
 class Summary extends StatelessWidget{
   Summary(this.icon, this.text);
