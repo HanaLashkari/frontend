@@ -34,7 +34,7 @@ class _projectsState extends State<projects> {
       setState(() {
         print('------3-090-103-03--0----here ====== reponse = $response ');
          listStrings = response.split("=");
-         setlists(listStrings, DateTime.now());
+        setListsDefault(listStrings, DateTime.now());
       });
     }).catchError((error) {
 
@@ -75,7 +75,7 @@ class _projectsState extends State<projects> {
                   left: 20,
                   child: Row(
                     children: [
-                      LittleFieldBox(labelText: 'تاریخ', controller: dateContoroller, hintText:  'مثال : 2024/02/03' , width: 180,),
+                      LittleFieldBox(labelText: 'تاریخ', controller: dateContoroller, hintText:  'مثال : 2024/02/03' , width: 130,),
                       IconButton(
                               onPressed: () => setState(
                                 () {
@@ -84,7 +84,7 @@ class _projectsState extends State<projects> {
                               print('herrrrrreeeeeeeeeee ${times.length}');
                               if(times.length != 3)
                                 return;
-                              setlists(listStrings, DateTime(int.parse(times[0]) ,int.parse(times[1]) , int.parse(times[2])));
+                              setListsDefault(listStrings, DateTime(int.parse(times[0]) ,int.parse(times[1]) , int.parse(times[2])));
                               print(past);
                               print("kokokoko");
                               print(future);
@@ -92,9 +92,113 @@ class _projectsState extends State<projects> {
                           ),
                           icon: Icon(Icons.data_saver_on , color: Color(0xff003b11), size: 40,))
                     ],
-                  )),
+                  )),   //بخش انتخاب تاریخ و دکمه اش
               Positioned(
-                  top: 40,
+                top: 30,
+                  right: 135,
+                  child: Column(
+                    children: [
+                      IconButton(
+                          onPressed: () => setState(
+                                () {
+                              setListsEarliest(listStrings, DateTime.now());
+                              print(past);
+                              print("kokokoko");
+                              print(future);
+                            },
+                          ),
+                          icon: Icon(Icons.lock_clock_outlined , color: Color(0xff003b11), size: 40,)),
+                      Text(
+                          "تاریخ تحویل",
+                        style: TextStyle(
+                          color: textColor,
+                          fontSize: 7,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      )
+                    ],
+                  )
+              ),  //دکمه مرتب سازی بر اساس تاریخ تحویل
+              Positioned(
+                  top: 30,
+                  right: 90,
+                  child: Column(
+                    children: [
+                      IconButton(
+                          onPressed: () => setState(
+                                () {
+                              setListsTimeSet(listStrings, DateTime.now());
+                              print(past);
+                              print("kokokoko");
+                              print(future);
+                            },
+                          ),
+                          icon: Icon(Icons.sort , color: Color(0xff003b11), size: 40,)),
+                      Text(
+                        "زمان تعریف",
+                        style: TextStyle(
+                          color: textColor,
+                          fontSize: 7,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      )
+                    ],
+                  )
+              ),  //دکمه مرتب سازی بر اساس زمان تعریف
+              Positioned(
+                  top: 30,
+                  right: 50,
+                  child: Column(
+                    children: [
+                      IconButton(
+                          onPressed: () => setState(
+                                () {
+                              setListsEstimatedTime(listStrings, DateTime.now());
+                              print(past);
+                              print("kokokoko");
+                              print(future);
+                            },
+                          ),
+                          icon: Icon(Icons.punch_clock_outlined , color: Color(0xff003b11), size: 40,)),
+                      Text(
+                        "زمان تخمینی",
+                        style: TextStyle(
+                          color: textColor,
+                          fontSize: 7,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      )
+                    ],
+                  )
+              ),  //دکمه مرتب سازی بر اساس زمان تخمینی
+              Positioned(
+                  top: 30,
+                  right: 5,
+                  child: Column(
+                    children: [
+                      IconButton(
+                          onPressed: () => setState(
+                                () {
+                              setListsAlphabet(listStrings, DateTime.now());
+                              print(past);
+                              print("kokokoko");
+                              print(future);
+                            },
+                          ),
+                          icon: Icon(Icons.sort_by_alpha , color: Color(0xff003b11), size: 40,)),
+                      Text(
+                        "حروف الفبا",
+                        style: TextStyle(
+                          color: textColor,
+                          fontSize: 7,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      )
+                    ],
+                  )
+              ),  //دکمه مرتب سازی بر اساس حروف الفبا
+              Positioned(
+                  top: 120,
                   right: 25,
                   child: Text(
                     'تمرینا',
@@ -104,19 +208,19 @@ class _projectsState extends State<projects> {
                       fontSize: 25,
                     ),
                   )
-              ),
+              ),  //نوشته
               for(int i=0 ; i<future.length ; i++)
                 Positioned(
-                    top: i*80+110,
+                    top: i*80+170,
                     right: 18 ,
                     child: ProjectBox(widget.id,b: true, title: future[i].title, deadline: future[i].deadline, time: future[i].hour, explainServer: future[i].description.split(',')[0], explainClient: !future[i].description.contains(',')? "توضیحات تحویل" : future[i].description.split(',')[1], grade: future[i].grade , esatimatedTime: future[i].estimatedTime,)
-                ),
+                ),  //تمرینای اینده
               for(int i=0 ; i<past.length ; i++)
                 Positioned(
-                    top: i*80+110+future.length*80,
+                    top: i*80+170+future.length*80,
                     right: 18 ,
                     child: ProjectBox(widget.id,b: false, title: past[i].title, deadline: past[i].deadline, time: past[i].hour, explainServer: past[i].description.split(',')[0], explainClient: !past[i].description.contains(',')? "توضیحات تحویل" : past[i].description.split(',')[1], grade: past[i].grade , esatimatedTime:  past[i].estimatedTime,)
-                ),
+                ),  //تمرینای گذشته
             ],
           ),
         ),
@@ -235,7 +339,7 @@ class _projectsState extends State<projects> {
     return response;
   }
 
-  void setlists(List<String> list , DateTime dateTime){
+  void setListsDefault(List<String> list , DateTime dateTime){
     projects.clear();
     past.clear();
     future.clear();
@@ -243,7 +347,7 @@ class _projectsState extends State<projects> {
       List<String> parts = s.split("-");
       List<String> timeList = parts[1].split(",");
       projects.add(ProjectHandler(
-        firstString: s,
+          firstString: s,
           title: parts[0],
           dataTime: DateTime(int.parse(timeList[0].split("/")[0]) , int.parse(timeList[0].split("/")[1]) , int.parse(timeList[0].split("/")[2]) ,
               int.parse(timeList[1].split(":")[0]) , int.parse(timeList[1].split(":")[1])),
@@ -268,6 +372,155 @@ class _projectsState extends State<projects> {
         return 1;
       }
     });
+    for(ProjectHandler p in projects) {
+      print(p.title);
+      if(p.dateTime().isBefore(dateTime))
+        past.add(p);
+      else if(p.dateTime().isAfter(dateTime) || p.dataTime == dateTime)
+        future.add(p);
+    }
+    for(ProjectHandler p in future)
+      print("future = ${p.title}");
+    for(ProjectHandler p in past)
+      print("past = ${p.title}");
+  }
+
+  void setListsEarliest(List<String> list , DateTime dateTime){
+    projects.clear();
+    past.clear();
+    future.clear();
+    for(String s in list){
+      List<String> parts = s.split("-");
+      List<String> timeList = parts[1].split(",");
+      projects.add(ProjectHandler(
+          firstString: s,
+          title: parts[0],
+          dataTime: DateTime(int.parse(timeList[0].split("/")[0]) , int.parse(timeList[0].split("/")[1]) , int.parse(timeList[0].split("/")[2]) ,
+              int.parse(timeList[1].split(":")[0]) , int.parse(timeList[1].split(":")[1])),
+          hour: timeList[1],
+          deadline: timeList[0],
+          grade: parts[2],
+          description: parts[3],
+          estimatedTime: timeList[2]));
+      if(projects.last.description.contains(","))
+        projects.remove(projects.last);
+    }
+    projects.sort((ProjectHandler a, ProjectHandler b) {
+// اگر هر دو تاریخ در گذشته یا آینده هستند، بر اساس زمان مرتب میشوند
+      if ((a.dateTime().isBefore(dateTime) && b.dateTime().isBefore(dateTime)) ||
+          (a.dateTime().isAfter(dateTime) && b.dateTime().isAfter(dateTime))) {
+        return a.dateTime().compareTo(b.dateTime());
+      } else if (a.dateTime().isBefore(dateTime)) {
+// 'a' گذشته است و 'b' آینده است، 'a' اول قرار میگیرد
+        return -1;
+      } else {
+// 'a' آینده است و 'b' گذشته است، 'b' اول قرار میگیرد
+        return 1;
+      }
+    });
+    for(ProjectHandler p in projects) {
+      print(p.title);
+      if(p.dateTime().isBefore(dateTime))
+        past.add(p);
+      else if(p.dateTime().isAfter(dateTime) || p.dataTime == dateTime)
+        future.add(p);
+    }
+    for(ProjectHandler p in future)
+      print("future = ${p.title}");
+    for(ProjectHandler p in past)
+      print("past = ${p.title}");
+  }
+
+  void setListsTimeSet(List<String> list , DateTime dateTime){
+    projects.clear();
+    past.clear();
+    future.clear();
+    for(String s in list){
+      List<String> parts = s.split("-");
+      List<String> timeList = parts[1].split(",");
+      projects.add(ProjectHandler(
+          firstString: s,
+          title: parts[0],
+          dataTime: DateTime(int.parse(timeList[0].split("/")[0]) , int.parse(timeList[0].split("/")[1]) , int.parse(timeList[0].split("/")[2]) ,
+              int.parse(timeList[1].split(":")[0]) , int.parse(timeList[1].split(":")[1])),
+          hour: timeList[1],
+          deadline: timeList[0],
+          grade: parts[2],
+          description: parts[3],
+          estimatedTime: timeList[2]));
+      if(projects.last.description.contains(","))
+        projects.remove(projects.last);
+    }
+    for(ProjectHandler p in projects) {
+      print(p.title);
+      if(p.dateTime().isBefore(dateTime))
+        past.add(p);
+      else if(p.dateTime().isAfter(dateTime) || p.dataTime == dateTime)
+        future.add(p);
+    }
+    for(ProjectHandler p in future)
+      print("future = ${p.title}");
+    for(ProjectHandler p in past)
+      print("past = ${p.title}");
+  }
+
+  void setListsEstimatedTime(List<String> list , DateTime dateTime){
+    projects.clear();
+    past.clear();
+    future.clear();
+    for(String s in list){
+      List<String> parts = s.split("-");
+      List<String> timeList = parts[1].split(",");
+      projects.add(ProjectHandler(
+          firstString: s,
+          title: parts[0],
+          dataTime: DateTime(int.parse(timeList[0].split("/")[0]) , int.parse(timeList[0].split("/")[1]) , int.parse(timeList[0].split("/")[2]) ,
+              int.parse(timeList[1].split(":")[0]) , int.parse(timeList[1].split(":")[1])),
+          hour: timeList[1],
+          deadline: timeList[0],
+          grade: parts[2],
+          description: parts[3],
+          estimatedTime: timeList[2]));
+      if(projects.last.description.contains(","))
+        projects.remove(projects.last);
+    }
+    projects.sort((ProjectHandler a, ProjectHandler b) => int.parse(a.estimatedTime)-int.parse(b.estimatedTime));
+
+    for(ProjectHandler p in projects) {
+      print(p.title);
+      if(p.dateTime().isBefore(dateTime))
+        past.add(p);
+      else if(p.dateTime().isAfter(dateTime) || p.dataTime == dateTime)
+        future.add(p);
+    }
+    for(ProjectHandler p in future)
+      print("future = ${p.title}");
+    for(ProjectHandler p in past)
+      print("past = ${p.title}");
+  }
+
+  void setListsAlphabet(List<String> list , DateTime dateTime){
+    projects.clear();
+    past.clear();
+    future.clear();
+    for(String s in list){
+      List<String> parts = s.split("-");
+      List<String> timeList = parts[1].split(",");
+      projects.add(ProjectHandler(
+          firstString: s,
+          title: parts[0],
+          dataTime: DateTime(int.parse(timeList[0].split("/")[0]) , int.parse(timeList[0].split("/")[1]) , int.parse(timeList[0].split("/")[2]) ,
+              int.parse(timeList[1].split(":")[0]) , int.parse(timeList[1].split(":")[1])),
+          hour: timeList[1],
+          deadline: timeList[0],
+          grade: parts[2],
+          description: parts[3],
+          estimatedTime: timeList[2]));
+      if(projects.last.description.contains(","))
+        projects.remove(projects.last);
+    }
+    projects.sort((ProjectHandler a, ProjectHandler b) => a.title.compareTo(b.title));
+
     for(ProjectHandler p in projects) {
       print(p.title);
       if(p.dateTime().isBefore(dateTime))
