@@ -34,7 +34,7 @@ class _projectsState extends State<projects> {
       setState(() {
         print('------3-090-103-03--0----here ====== reponse = $response ');
          listStrings = response.split("=");
-        setListsDefault(listStrings, DateTime.now());
+        setListsDefault(listStrings,  DateTime(DateTime.now().year-621 , DateTime.now().month-3 , DateTime.now().day+10 , DateTime.now().hour , DateTime.now().minute));
       });
     }).catchError((error) {
 
@@ -84,7 +84,7 @@ class _projectsState extends State<projects> {
                               print('herrrrrreeeeeeeeeee ${times.length}');
                               if(times.length != 3)
                                 return;
-                              setListsDefault(listStrings, DateTime(int.parse(times[0]) ,int.parse(times[1]) , int.parse(times[2])));
+                              setListsDefault(listStrings, DateTime(int.parse(times[0]) ,int.parse(times[1]) , int.parse(times[2]) , DateTime.now().hour , DateTime.now().minute));
                               print(past);
                               print("kokokoko");
                               print(future);
@@ -343,6 +343,7 @@ class _projectsState extends State<projects> {
     projects.clear();
     past.clear();
     future.clear();
+    print('time ==== ${dateTime.toString()}');
     for(String s in list){
       List<String> parts = s.split("-");
       List<String> timeList = parts[1].split(",");
