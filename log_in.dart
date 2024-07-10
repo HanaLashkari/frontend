@@ -56,7 +56,7 @@ class _login_pageState extends State<login_page> {
                     color: colorText,
                     size: 22,
                   ),
-              ),
+              ),  //نوشته
               Positioned(
                 top: 75,
                 right: 16,
@@ -65,7 +65,7 @@ class _login_pageState extends State<login_page> {
                   color: colorText,
                   size: 15,
                 ),
-              ),
+              ),  //نوشته
               Positioned(
                 top: 100,
                 right: 75,
@@ -74,7 +74,7 @@ class _login_pageState extends State<login_page> {
                   color: colorText,
                   size: 15,
                 ),
-              ),
+              ),  //نوشته
               Positioned(
                 top: 180,
                 right: 32,
@@ -83,7 +83,7 @@ class _login_pageState extends State<login_page> {
                   hintText: 'بین نام و نام خانوادگی تنها یک فاصله باشد',
                   controller: usernameController,
                 )
-              ),
+              ),  //باکس نام و نام خانوادگی
               Positioned(
                   top: 280,
                   right: 32,
@@ -92,7 +92,7 @@ class _login_pageState extends State<login_page> {
                     hintText: 'اعداد باید انگلیسی باشند',
                     controller: idController,
                   )
-              ),
+              ),  //باکس شماره دانشجویی
               Positioned(
                   top: 380,
                   right: 32,
@@ -138,7 +138,7 @@ class _login_pageState extends State<login_page> {
                       ),
                     ),
                   ),
-              ),
+              ),  //باکس رمز عبور
               Positioned(
                   top: 450,
                   right: 26,
@@ -157,7 +157,7 @@ class _login_pageState extends State<login_page> {
                       pharse: 'ثبت نام کنید',
                     ),
                   ),
-              ),
+              ),  //ثبت نام کنید
               Positioned(
                 top: 500,
                 right: 115,
@@ -192,7 +192,7 @@ class _login_pageState extends State<login_page> {
                       ],
                     ),
                   )
-                )),
+                )),  //دکمه ورود
               Eror_login(response: response, widthOfScreen: widthOfScreen, buttonColor: buttonColor),
             ],
           ),

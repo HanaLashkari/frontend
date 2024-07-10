@@ -70,7 +70,7 @@ class _signup_page extends State<signup_page> {
                   color: textColor,
                   size: 22,
                 ),
-              ),
+              ),  //نوشته
               Positioned(
                 top: 75,
                 right: 75,
@@ -79,7 +79,7 @@ class _signup_page extends State<signup_page> {
                   color: textColor,
                   size: 15,
                 ),
-              ),
+              ),  //نوشته
               Positioned(
                   top: 160,
                   right: 32,
@@ -88,7 +88,7 @@ class _signup_page extends State<signup_page> {
                     hintText: 'بین نام و نام خانوادگی تنها یک فاصله باشد',
                     controller: usernameController,
                   )
-              ),
+              ),  //باکش نام و نام خانوادگی
               Positioned(
                   top: 270,
                   right: 32,
@@ -97,7 +97,7 @@ class _signup_page extends State<signup_page> {
                     hintText: 'اعداد باید انگلیسی باشند',
                     controller: idController,
                   )
-              ),
+              ),  //باکس شماره دانشجویی
               Positioned(
                 top: 380,
                 right: 32,
@@ -143,7 +143,7 @@ class _signup_page extends State<signup_page> {
                     ),
                   ),
                 ),
-              ),
+              ),  // باکس رمز عبور
               Positioned(
                   top: 482,
                   right: 115,
@@ -179,7 +179,7 @@ class _signup_page extends State<signup_page> {
                         ),
                       )
                   )
-              ),
+              ),  //دکمه ورورد
               Eror_password(response: response, widthOfScreen: widthOfScreen, buttonColor: buttonColor),
               Eror_login(response: response, widthOfScreen: widthOfScreen, buttonColor: buttonColor)
             ],

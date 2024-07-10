@@ -194,7 +194,8 @@ class _classesState extends State<classes> {
                     )
                 ),
               ),
-              for(int i=0 ; i<x ; i++)
+              for(int i=0 ; i<list.length ; i++)
+                if(list[i].split("-").length>4)
                 Positioned(
                     top: i*220+100,
                     right: 5 ,
@@ -304,18 +305,16 @@ class _classesState extends State<classes> {
     socket.write('${widget.id}-addClass\u0000');
     socket.write('${codeController.text}\u0000');
     socket.flush();
-
     final responseBuffer = StringBuffer();
     socket.listen((socketResponse) {
       responseBuffer.write(String.fromCharCodes(socketResponse));
     }, onDone: () {
       socket.close();
     });
-
-    await socket.done;  // Wait for the socket to be closed
     setState(() {
       response = responseBuffer.toString();
     });
+    print('lizhdbhujsreedkabhereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee ============== $response');
     return response;
   }
 

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,15 +19,13 @@ class _user_profileState extends State<user_profile> {
   static const textColor = Color(0xFF024335);
   static const backgroundColor = Color(0xFFE6F6EF);
   final usernameController = TextEditingController();
-  final idController = TextEditingController();
   final passwordController = TextEditingController();
-  final currentTermController = TextEditingController();
-  final gradeController = TextEditingController();
-  final unitsController = TextEditingController();
   bool _isVisible = true;
   var response = '';
   @override
   Widget build(BuildContext context) {
+    double heightOfScreen = MediaQuery.of(context).size.height;
+    double widthOfScreen = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         title: Text('User Profile'),
@@ -85,7 +84,7 @@ class _user_profileState extends State<user_profile> {
                       )
                   )
               ),
-            )),
+            )),  //نمایه
             Positioned(
               top: 148,
               right: 105,
@@ -94,13 +93,13 @@ class _user_profileState extends State<user_profile> {
                 color: textColor,
                 size: 18,
               ),
-            ),
+            ),  //نوشته
             Positioned(
               top: 190,
                 right: 10,
                 child: Container(
                   width: 365,
-                  height: 450,
+                  height: 290,
                   decoration: BoxDecoration(
                     color: backgroundColor,
                     border: Border.all(
@@ -109,58 +108,71 @@ class _user_profileState extends State<user_profile> {
                     ),
                     borderRadius: BorderRadius.all(Radius.circular(50)),
                   ),
-                )),
+                )),  //بکگراند
             Positioned(
-                top: 220,
+                top: 250,
                 right: 32,
                 child: FieldBox(
                   labelText: 'نام و نام خانوادگی',
                   hintText: 'بین نام و نام خانوادگی تنها یک فاصله باشد',
                   controller: usernameController,
                 )
-            ),
+            ),  //باکس نام و نام خانوادگی
             Positioned(
-                top: 300,
-                right: 32,
-                child: FieldBox(
-                  labelText: 'شماره دانشجویی',
-                  hintText: 'اعداد باید انگلیسی باشند',
-                  controller: idController,
-                )
-            ),
+              top: 350,
+              right: 32,
+              child: SizedBox(
+                width: 320,
+                child: TextFormField(
+                  obscureText: _isVisible,
+                  controller: passwordController,
+                  textAlign: TextAlign.left,
+                  decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          _isVisible = !_isVisible;
+                        });
+                      },
+                      icon: _isVisible
+                          ? Icon(Icons.visibility_off)
+                          : Icon(Icons.visibility),
+                      color: textColor,
+                    ),
+                    filled: true,
+                    fillColor: Colors.white70,
+                    labelText: 'رمز عبور',
+                    labelStyle: const TextStyle(
+                      color: Color(0xff003b11),
+                      fontWeight: FontWeight.w300,
+                    ),
+                    border: const UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.green , width: 5)),
+                    hintText: 'رمز عبور نباید شامل نام کاربری باشد',
+                    hintStyle: const TextStyle(color: Color(0xFFB4B4B4)),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide(color: Color(0xff003b11) , width: 3),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(
+                          color: Color(0xff09ce36),
+                          style: BorderStyle.solid),
+                    ),
+                  ),
+                ),
+              ),
+            ),  //باکس رمز عبور
             Positioned(
-                top: 380,
-                right: 32,
-                child: FieldBox(
-                  labelText: 'ترم جاری',
-                  hintText: 'مثال : بهار 1402-1403',
-                  controller: currentTermController,
-                )
-            ),
-            Positioned(
-                top: 460,
-                right: 32,
-                child: FieldBox(
-                  labelText: 'تعداد واحد',
-                  hintText: 'مثال : 18',
-                  controller: unitsController,
-                )
-            ),
-            Positioned(
-                top: 540,
-                right: 32,
-                child: FieldBox(
-                  labelText: 'معدل کل',
-                  hintText: ' مثال : 19.33',
-                  controller: gradeController,
-                )
-            ),
-            Positioned(
-                top: 660,
+                top: 500,
                 right: 118,
                 child: InkWell(
                     onTap: () async {
-                      print('************here     :    $response');
+                      changeInformation();
+                      Navigator.pushReplacement(context, MaterialPageRoute(
+                        builder: (context) => home(widget.id),
+                      ));
                     },
                     child: Container(
                       width: 150,
@@ -180,16 +192,18 @@ class _user_profileState extends State<user_profile> {
                         ],
                       ),
                     )
-                )),
+                )),  //دکمه ثبت
+            Eror_password(response: response, widthOfScreen: widthOfScreen, buttonColor: buttonColor),
+            Eror_login(response: response, widthOfScreen: widthOfScreen, buttonColor: buttonColor)
           ],
         ),
       ),
     );
   }
-  /*Future<String> changeInformation() async {
+  Future<String> changeInformation() async {
     await Socket.connect("192.168.1.35", 8000).then((serverSocket) {
-      serverSocket.write('signup\u0000');
-      serverSocket.write('${usernameController.text}-${idController.text}-${passwordController.text}\u0000');
+      serverSocket.write('${widget.id}-changeInformation\u0000');
+      serverSocket.write('${usernameController.text}-${passwordController.text}\u0000');
       serverSocket.flush();
       serverSocket.listen((socketResponse) {
         if (mounted) {
@@ -201,5 +215,5 @@ class _user_profileState extends State<user_profile> {
     });
     print("---------- server response is:  { $response }");
     return response;
-  }*/
+  }
 }
