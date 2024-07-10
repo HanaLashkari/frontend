@@ -99,7 +99,7 @@ class _user_profileState extends State<user_profile> {
                 right: 10,
                 child: Container(
                   width: 365,
-                  height: 290,
+                  height: 230,
                   decoration: BoxDecoration(
                     color: backgroundColor,
                     border: Border.all(
@@ -110,7 +110,7 @@ class _user_profileState extends State<user_profile> {
                   ),
                 )),  //بکگراند
             Positioned(
-                top: 250,
+                top: 230,
                 right: 32,
                 child: FieldBox(
                   labelText: 'نام و نام خانوادگی',
@@ -119,7 +119,7 @@ class _user_profileState extends State<user_profile> {
                 )
             ),  //باکس نام و نام خانوادگی
             Positioned(
-              top: 350,
+              top: 310,
               right: 32,
               child: SizedBox(
                 width: 320,
@@ -165,14 +165,16 @@ class _user_profileState extends State<user_profile> {
               ),
             ),  //باکس رمز عبور
             Positioned(
-                top: 500,
+                top: 450,
                 right: 118,
                 child: InkWell(
                     onTap: () async {
                       changeInformation();
-                      Navigator.pushReplacement(context, MaterialPageRoute(
-                        builder: (context) => home(widget.id),
-                      ));
+                      if (response.contains('5')) {
+                        Navigator.pushReplacement(context, MaterialPageRoute(
+                          builder: (context) => home(widget.id),
+                        ));
+                      }
                     },
                     child: Container(
                       width: 150,
@@ -201,7 +203,7 @@ class _user_profileState extends State<user_profile> {
     );
   }
   Future<String> changeInformation() async {
-    await Socket.connect("192.168.1.35", 8000).then((serverSocket) {
+    await Socket.connect("192.168.141.145", 8000).then((serverSocket) {
       serverSocket.write('${widget.id}-changeInformation\u0000');
       serverSocket.write('${usernameController.text}-${passwordController.text}\u0000');
       serverSocket.flush();
