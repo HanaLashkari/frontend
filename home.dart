@@ -37,7 +37,7 @@ class _homeState extends State<home> {
       setState(() {
         print('------3-090-103-03--0----here ====== reponse = $response ');
         listStrings = response.split("#");
-        setlists(listStrings, DateTime.now());
+        setlists(listStrings, DateTime(DateTime.now().year-621 , DateTime.now().month-3 , DateTime.now().day+10 , DateTime.now().hour , DateTime.now().minute));
       });
     }).catchError((error) {
     });
@@ -144,7 +144,7 @@ class _homeState extends State<home> {
                 Positioned(
                     top: i*80+370,
                     right: 18 ,
-                    child: ToDoList(title: notDoneList[i].title, b: true , firstStr: notDoneList[i].firstString, id: widget.id , clazz: true,)
+                    child: ToDoList(title: notDoneList[i].title, b: true , firstStr: notDoneList[i].firstString, id: widget.id , clazz: false,)
                 ),//column for to do list
               Positioned(
                   top: 380+notDoneList.length*80,
@@ -290,6 +290,7 @@ class _homeState extends State<home> {
   }
 
   void setlists(List<String> list , DateTime dateTime){
+    //تمارین با تاریخ هجری شمسی و لیست کار ها با تاریخ میلادی مقدار دهی شده اند
     doneList.clear();
     notDoneList.clear();
     List<String> part = list[0].split(',');
@@ -298,6 +299,7 @@ class _homeState extends State<home> {
     worst = part[2];
     best = part[3];
     print('object  ========= $assignment --- $exam --- $worst --- $best');
+    DateTime dateTime2 = DateTime.now();
     List<ToDoListHandlaer> listOfworks = [];
     for(String s in list[1].split("=")){
       List<String> parts = s.split("-");
@@ -310,15 +312,15 @@ class _homeState extends State<home> {
           isDone: parts[6]
       )
       );
-      if(!(listOfworks.last.dataTime.year == dateTime.year && listOfworks.last.dataTime.month == dateTime.month && listOfworks.last.dataTime.day == dateTime.day))
+      if(!(listOfworks.last.dataTime.year == dateTime2.year && listOfworks.last.dataTime.month == dateTime2.month && listOfworks.last.dataTime.day == dateTime2.day))
         listOfworks.remove(listOfworks.last);
     }
     listOfworks.sort((ToDoListHandlaer a, ToDoListHandlaer b) {
 // اگر هر دو تاریخ در گذشته یا آینده هستند، بر اساس زمان مرتب میشوند
-      if ((a.dateTime().isBefore(dateTime) && b.dateTime().isBefore(dateTime)) ||
-          (a.dateTime().isAfter(dateTime) && b.dateTime().isAfter(dateTime))) {
+      if ((a.dateTime().isBefore(dateTime2) && b.dateTime().isBefore(dateTime2)) ||
+          (a.dateTime().isAfter(dateTime2) && b.dateTime().isAfter(dateTime2))) {
         return a.dateTime().compareTo(b.dateTime());
-      } else if (a.dateTime().isBefore(dateTime)) {
+      } else if (a.dateTime().isBefore(dateTime2)) {
 // 'a' گذشته است و 'b' آینده است، 'a' اول قرار میگیرد
         return -1;
       } else {
@@ -333,6 +335,8 @@ class _homeState extends State<home> {
     }
     for(ToDoListHandlaer p in notDoneList)
       print("not done = ${p.title}");
+
+    print(dateTime2.toString());
 
     for(String s in list[2].split("=")){
       List<String> parts = s.split("-");

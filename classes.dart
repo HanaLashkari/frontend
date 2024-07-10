@@ -78,7 +78,7 @@ class _classesState extends State<classes> {
                       fontSize: 25,
                     ),
                   )
-              ),
+              ),  //نوشته
               Positioned(
                 top: 25,
                 left: 13,
@@ -111,17 +111,19 @@ class _classesState extends State<classes> {
                             actions: [
                               InkWell(
                                   onTap: () async {
-                                    addClass();
-                                    Navigator.of(context).pop();
-                                    print('----- reponse = $response');
-                                    if(response == 'not found'){
-                                      erorNotFound();
-                                    }else if(response == 'found'){
-                                      Navigator.pushReplacement(context, MaterialPageRoute(
-                                          builder: (context) => PageForClass(widget.id)));
-                                    }
-                                    response = '';
-                                    //codeController.clear();
+                                    setState(() {
+                                      addClass();
+                                      Navigator.of(context).pop();
+                                      print('----- reponse = $response');
+                                      if(response == 'not found'){
+                                        erorNotFound();
+                                      }else if(response == 'found'){
+                                        Navigator.pushReplacement(context, MaterialPageRoute(
+                                            builder: (context) => PageForClass(widget.id)));
+                                      }
+                                      response = '';
+
+                                    });
                                   },
                                   child: Row(
                                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -193,13 +195,13 @@ class _classesState extends State<classes> {
                       ],
                     )
                 ),
-              ),
+              ),  //افزودن درس جدید
               for(int i=0 ; i<list.length ; i++)
                 if(list[i].split("-").length>4)
                 Positioned(
                     top: i*220+100,
                     right: 5 ,
-                    child: CardForClases(title: list[i].split("-")[0], teacher: list[i].split("-")[1], unit: list[i].split("-")[2], numberOfHomework: list[i].split("-")[3], bestStudent: list[i].split("-")[4])),
+                    child: CardForClases(title: list[i].split("-")[0], teacher: list[i].split("-")[1], unit: list[i].split("-")[2], numberOfHomework: list[i].split("-")[3], bestStudent: list[i].split("-")[4])),  //باکس کلاس ها
 
             ],
           ),

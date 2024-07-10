@@ -52,7 +52,7 @@ class _todolistState extends State<todolist> {
       body: SingleChildScrollView(
         child: Container(
           width: widthOfScreen,
-          height: notDoneList.length+doneList.length>7 ? heightOfScreen+(notDoneList.length+doneList.length-8)*80 : heightOfScreen,
+          height: notDoneList.length+doneList.length>7 ? heightOfScreen+(notDoneList.length+doneList.length-8)*80 : heightOfScreen,  //طول صفحه با افزایش تعداد باکس ها زیاد می شود
           decoration: BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.topRight,
@@ -87,7 +87,7 @@ class _todolistState extends State<todolist> {
                     top: i*80+75,
                     right: 18 ,
                     child: ToDoList(title: notDoneList[i].title, b: true , firstStr: notDoneList[i].firstString, id: widget.id , clazz: true,)
-                ),
+                ),  //to do works boxes
               Positioned(
                   top: notDoneList.length*80+80,
                   right: 20,
@@ -289,7 +289,7 @@ class _todolistState extends State<todolist> {
                                 )
                               ],
                             ),
-                          ),
+                          ),  //دکمه افزودن
                         ],
                       )
                   )
