@@ -111,7 +111,7 @@ class PharseText extends StatelessWidget {
       style: TextStyle(
         color: color,
         fontSize: size,
-        fontWeight: FontWeight.w300,
+        fontWeight: FontWeight.w400,
       ),
     );
   }

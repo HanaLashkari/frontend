@@ -164,7 +164,7 @@ class _homeState extends State<home> {
                     top: i*60+440+notDoneList.length*80,
                     right: 30 ,
                     child: DoneWork(doneList[i].title), //column even for done work
-                ),
+                ),  //column even for done work
               for(int i=0 ; i<doneList.length ; i++)
                 if(i%2 == 1)
                   Positioned(

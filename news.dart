@@ -4,7 +4,6 @@ import 'package:project/classes.dart';
 import 'package:project/projects.dart';
 import 'package:project/todolist.dart';
 import 'home.dart';
-
 class news extends StatefulWidget{
   int id;
   news(this.id);
@@ -56,26 +55,42 @@ class _news extends State<news> {
                       fontSize: 25,
                     ),
                   )
-              ),
+              ),  //نوشته
               Positioned(
-                  top: 70,
-                  right: 13.5,
-                  child: NEWS(title: 'news' , text: 'nothing'),
+                  top: 700,
+                  right: 7.5,
+                  child: NEWS(
+                    title: 'کسب رتبه اول در 22مین دوره مسابقات برنامه نویسی دانشجویی کشور' ,
+                    text: 'در بیست و دومین دوره مسابقات برنامه نویسی دانشجویی دانشگاههای کشور که در تاریخ 18 فروردین ماه به میزبانی دانشگاه صنعتی امیرکبیر برگزار شد، تیم برنامه نویسی دانشجویی ICPC دانشکده مهندسی و علوم کامپیوتر دانشگاه شهیدبهشتی، متشکل از آقایان محمدرضا محمدزاده، امیررضا محسنی، و میلاد انصاری، جایگاه اول دانشگاههای کشور را از آنِ خود نمود' ,
+                    url: 'https://cse.sbu.ac.ir/image/journal/article?img_id=59184046&t=1720580036179',
+                  ),
               ),
               Positioned(
                 top: 280,
-                right: 13.5,
-                child: NEWS(title: 'news' , text: 'nothing'),
+                right: 7.5,
+                child: NEWS(
+                    title: 'درخشش تیم رباتیک در هفدهمین دوره مسابقات بین‌المللی ربوکاپ آزاد ایران' ,
+                    text: 'اعضای تیم رباتیک دانشکده مهندسی کامپیوتر این دانشگاه (R3CESBU) محمدحسام نصیری، سیدحسن مجیدزنوزی، آریا پرویزی، سیدمصطفی اطیابی، ساناز موسی پور، سیده رانا رکنی، ماهان ویسی، کیارش کوثری و محمدرضا محمدزاده  دانشجویان مقطع کارشناسی هستند. آقای دکتر آرمین سلیمی بدر عضو هیأت علمی دانشکده مهندسی و علوم کامپیوتر، سرپرستی این تیم را برعهده دارد.',
+                    url:"https://cse.sbu.ac.ir/image/journal/article?img_id=60289669&t=1720580036165"
+                  )
               ),
               Positioned(
                 top: 490,
-                right: 13.5,
-                child: NEWS(title: 'news' , text: 'nothing'),
+                right: 7.5,
+                child: NEWS(
+                    title: 'کسب مقام سوم در مسابقات رباتیک کشوری در بخش ربات‌های پرنده' ,
+                    text: 'تيم رباتیک دانشگاه شهيد بهشتي در مسابقات رباتیک کشوری در بخش ربات‌های پرنده مقام سوم را به دست آورد. اعضای تیم این دانشگاه آقایان محمدحسام نصیری، مهدی پرچمی، مصطفی اطیابی، سید حسن مجید زنوزی و خانم فاطمه حوراء حقیقت خواه هستند. آقای دکتر آرمین سلیمی بدر عضو هیأت علمی دانشکده مهندسی و علوم کامپیوتر، سرپرستی این تیم را برعهده دارد.',
+                    url: 'https://cse.sbu.ac.ir/documents/1009763/0/photo_5843812226576794799_y.jpg/6ce004aa-e5e0-676e-d013-4416431d105f?t=1713630135955',
+                ),
               ),
               Positioned(
-                top: 700,
-                right: 13.5,
-                child: NEWS(title: 'news' , text: 'nothing'),
+                top: 70,
+                right: 7.5,
+                child: NEWS(
+                    title: 'مسابقه برنامه‌نویسی NEWBIES 2024 برگزار شد' ,
+                    text: 'مسابقه برنامه‌نویسی NEWBIES 2024 با حضور ۲۴ تیم برنامه‌نویسی سه نفره از دانشجویان سال اول و دوم دانشگاه، در تاریخ ۱۲ تیرماه ۱۴۰۲ در دانشکده مهندسی و علوم کامپیوتر برگزار شد. این رویداد که با هدف ارتقای مهارت‌های برنامه‌نویسی و کشف استعدادهای جدید دانشجویی برگزار شد، با استقبال گسترده‌ای همراه بود. در این مسابقه، شرکت‌کنندگان با چالش حل ۱۱ سوال الگوریتمی به سبک مسابقات ICPC روبه‌رو شدند.',
+                    url: 'https://cse.sbu.ac.ir/documents/1009763/0/photo_5780568639869665649_y.jpg/17a19aab-6eaf-09de-876f-cf46d1b74c6c?t=1720257622706',
+                ),
               ),
             ],
           ),
@@ -182,14 +197,15 @@ class _news extends State<news> {
 class NEWS extends StatelessWidget{
   String title;
   String text;
-  NEWS({required this.title,required this.text});
+  String url;
+  NEWS({required this.title,required this.text , required this.url});
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Container(
-          width: 200,
+          width: 140,
           height: 180,
           decoration: BoxDecoration(
               border: Border.all(width: 4, color: _news.textColor),
@@ -201,13 +217,13 @@ class NEWS extends StatelessWidget{
               image: DecorationImage(
                   fit: BoxFit.cover,
                   image: NetworkImage(
-                    'https://static.cdn.asset.aparat.com/avt/35796944-5958-b__267564876.jpg',
+                    url
                   )
               )
           ),
         ),
         Container(
-          width: 160,
+          width: 230,
           height: 180,
           decoration:  BoxDecoration(
             color: Colors.green.shade300,
@@ -220,11 +236,26 @@ class NEWS extends StatelessWidget{
           ),
           child: Column(
             children: [
-              PharseText(pharse: title, color: _news.backgroundColor, size: 20),
-              SizedBox(height: 10,),
-              PharseText(pharse: text, color: _news.backgroundColor, size: 15),
-              SizedBox(height: 10,),
-              PharseText(pharse: 'بیشتر...', color: _news.textColor, size: 20),
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                textDirection: TextDirection.rtl,
+                style: TextStyle(
+                  color: _news.textColor,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 12,
+                ),
+              ),
+              Text(
+                text,
+                textAlign: TextAlign.center,
+                textDirection: TextDirection.rtl,
+                style: TextStyle(
+                  color: _news.backgroundColor,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 9.5
+                ),
+              )
             ],
           ),
         )

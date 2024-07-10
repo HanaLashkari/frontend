@@ -75,7 +75,7 @@ class _projectsState extends State<projects> {
                   left: 20,
                   child: Row(
                     children: [
-                      LittleFieldBox(labelText: 'تاریخ', controller: dateContoroller, hintText:  'مثال : 2024/02/03' , width: 130,),
+                      LittleFieldBox(labelText: 'تاریخ', controller: dateContoroller, hintText:  'مثال : 1403/02/03' , width: 130,),
                       IconButton(
                               onPressed: () => setState(
                                 () {
@@ -101,7 +101,7 @@ class _projectsState extends State<projects> {
                       IconButton(
                           onPressed: () => setState(
                                 () {
-                              setListsEarliest(listStrings, DateTime.now());
+                              setListsEarliest(listStrings, DateTime(DateTime.now().year-621 , DateTime.now().month-3 , DateTime.now().day+10 , DateTime.now().hour , DateTime.now().minute));
                               print(past);
                               print("kokokoko");
                               print(future);
@@ -127,7 +127,7 @@ class _projectsState extends State<projects> {
                       IconButton(
                           onPressed: () => setState(
                                 () {
-                              setListsTimeSet(listStrings, DateTime.now());
+                              setListsTimeSet(listStrings,DateTime(DateTime.now().year-621 , DateTime.now().month-3 , DateTime.now().day+10 , DateTime.now().hour , DateTime.now().minute));
                               print(past);
                               print("kokokoko");
                               print(future);
@@ -153,7 +153,7 @@ class _projectsState extends State<projects> {
                       IconButton(
                           onPressed: () => setState(
                                 () {
-                              setListsEstimatedTime(listStrings, DateTime.now());
+                              setListsEstimatedTime(listStrings, DateTime(DateTime.now().year-621 , DateTime.now().month-3 , DateTime.now().day+10 , DateTime.now().hour , DateTime.now().minute));
                               print(past);
                               print("kokokoko");
                               print(future);
@@ -179,7 +179,7 @@ class _projectsState extends State<projects> {
                       IconButton(
                           onPressed: () => setState(
                                 () {
-                              setListsAlphabet(listStrings, DateTime.now());
+                              setListsAlphabet(listStrings, DateTime(DateTime.now().year-621 , DateTime.now().month-3 , DateTime.now().day+10 , DateTime.now().hour , DateTime.now().minute));
                               print(past);
                               print("kokokoko");
                               print(future);
